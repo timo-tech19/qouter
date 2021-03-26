@@ -1,15 +1,28 @@
 {
   "name": "qouter",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Qouter project is a twitter clone example using quotes instead of tweets",
+  "main": "server.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "start": "nodemon server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timo-tech19/qouter.git"
+  },
+  "keywords": [
+    "Qouter",
+    "qoutes"
+  ],
+  "author": "Timo Heman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timo-tech19/qouter/issues"
+  },
+  "homepage": "https://github.com/timo-tech19/qouter#readme",
   "dependencies": {
-    "next": "10.0.9",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2"
   }
 }
