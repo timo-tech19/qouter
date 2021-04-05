@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, useHistory } from 'react-router-dom';
+
+import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
+
+import { login } from './redux/reducers/user';
+import { Home, Login, Register } from './pages';
+
+import './App.scss';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    useEffect(() => {
+        // Check for user in localStorage
+        const data = JSON.parse(localStorage.getItem('user'));
+        // update redux store with found user
+        if (data) {
+            dispatch(login(data.user));
+        } else {
+            history.push('/login');
+        }
+    }, [dispatch, history]);
+
+    return (
+        <>
+            <Switch>
+                <ProtectedRoute user={user} exact path="/">
+                    <Home />
+                </ProtectedRoute>
+                <IsUserRedirect user={user} loggedInPath="/" path="/register">
+                    <Register />
+                </IsUserRedirect>
+                <IsUserRedirect user={user} loggedInPath="/" path="/login">
+                    <Login />
+                </IsUserRedirect>
+            </Switch>
+        </>
+    );
 }
 
 export default App;

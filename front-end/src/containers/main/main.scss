@@ -1,0 +1,19 @@
+$color-primary: #007fff;
+
+main {
+    background-color: rgba($color-primary, 0.04);
+    grid-area: 'main';
+    width: 2fr;
+    padding: 2rem;
+
+    h1 {
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    hr {
+        border-color: var(--text-color);
+    }
+}
