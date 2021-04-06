@@ -1,4 +1,9 @@
+$color-primary: #007fff;
+
 .post {
+    background-color: rgba($color-primary, 0.04);
+    padding: 2rem;
+
     div {
         display: flex;
         margin-top: 2rem;

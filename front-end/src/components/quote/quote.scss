@@ -1,0 +1,73 @@
+$color-primary: #007fff;
+
+.quote {
+    padding: 2rem;
+    margin: 2rem;
+    border-radius: 2rem;
+    background-color: rgba($color-primary, 0.1);
+
+    header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    blockquote {
+        margin-top: 2rem;
+        padding: 2rem 0;
+        text-align: center;
+        position: relative;
+        color: #fff;
+        font-size: 1.8rem;
+
+        .fa-quote-left {
+            font-size: 7rem;
+            color: rgba(#fff, 0.1);
+            position: absolute;
+            top: 20%;
+            left: 0;
+        }
+    }
+
+    figcaption {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 1.4rem;
+        img {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+        }
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 2rem;
+
+        button.action {
+            background-color: transparent;
+            box-shadow: none;
+            border-radius: 0px;
+            font-size: 1.6rem;
+            color: var(--text-color);
+
+            &:nth-child(1):hover {
+                color: var(--color-primary);
+            }
+
+            &:nth-child(2):hover {
+                color: yellow;
+            }
+
+            &:nth-child(3):hover {
+                color: green;
+            }
+
+            &:nth-child(4):hover {
+                color: orangered;
+            }
+        }
+    }
+}

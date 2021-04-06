@@ -4,7 +4,7 @@ exports.getQuotes = async (req, res, next) => {
     try {
         const quotes = await Quote.find()
             .select('-__v')
-            .populate('postedBy')
+            .populate('quotedBy')
             .sort({ createdAt: -1 });
 
         if (!quotes) {

@@ -1,10 +1,32 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import axios from 'axios';
 import './post.scss';
 
 function Post() {
     const [quote, setQuote] = useState('');
     const user = useSelector((state) => state.user);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const token = JSON.parse(localStorage.getItem('user')).token;
+
+        try {
+            await axios({
+                url: 'http://localhost:5000/api/v1/quotes',
+                method: 'post',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                data: {
+                    content: quote,
+                },
+            });
+        } catch (error) {
+            console.log(error.response.data);
+        }
+    };
 
     return (
         <div className="post">
@@ -18,7 +40,9 @@ function Post() {
                     value={quote}
                 />
             </div>
-            <button disabled={!quote ? true : false}>Quote</button>
+            <button disabled={!quote ? true : false} onClick={handleSubmit}>
+                Quote
+            </button>
             <hr />
         </div>
     );
