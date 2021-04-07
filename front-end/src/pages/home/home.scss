@@ -4,43 +4,56 @@ $color-primary: #007fff;
     position: relative;
     display: grid;
     grid-template-areas: 'nav main aside';
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
 
     @media screen and (max-width: 640px) {
         grid-template-areas: 'nav main';
-        grid-template-columns: 1fr 7fr;
+        grid-template-columns: 1.1fr 7.1fr;
     }
 
-    nav {
-        // background-color: #fff;
+    .navContainer {
         height: 100vh;
         grid-area: 'nav';
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        position: relative;
 
-        ul {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            list-style: none;
-            margin-top: 2rem;
-            padding: 1rem;
-        }
+        nav {
+            // background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 25%;
+            height: 100%;
 
-        .logo i {
-            color: $color-primary;
-        }
+            @media screen and (max-width: 640px) {
+                width: 15%;
+            }
 
-        i {
-            font-size: 3.3rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            color: var(--text-color);
-            transition: all 0.3s ease-out;
+            ul {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                list-style: none;
+                margin-top: 2rem;
+                padding: 1rem;
+            }
 
-            &:hover {
+            .logo i {
                 color: $color-primary;
-                background-color: rgba($color-primary, 0.2);
-                border-radius: 50%;
+            }
+
+            i {
+                font-size: 3.3rem;
+                margin-bottom: 1rem;
+                padding: 1rem;
+                color: var(--text-color);
+                transition: all 0.3s ease-out;
+
+                &:hover {
+                    color: $color-primary;
+                    background-color: rgba($color-primary, 0.2);
+                    border-radius: 50%;
+                }
             }
         }
     }

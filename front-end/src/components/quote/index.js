@@ -43,8 +43,8 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
     return (
         <figure className="quote">
             <header>
-                <p>{relativeTime}</p>
                 <p>@{quotedBy.userName}</p>
+                <p>{relativeTime}</p>
             </header>
             <blockquote>
                 <i className="fas fa-quote-left"></i>

@@ -19,45 +19,48 @@ function Home() {
 
     return (
         <div className="homepage">
-            <nav>
-                <ul>
-                    <li className="logo">
-                        <Link to="/">
-                            <i className="fas fa-feather-alt"></i>{' '}
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/">
-                            <i className="fas fa-home"></i>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/search">
-                            <i className="fas fa-search"></i>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/notifications">
-                            <i className="fas fa-bell"></i>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/messages">
-                            <i className="fas fa-envelope"></i>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/profile">
-                            <i className="fas fa-user"></i>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link onClick={logout} to="#">
-                            <i className="fas fa-sign-out-alt"></i>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
+            <div className="navContainer">
+                <nav>
+                    <ul>
+                        <li className="logo">
+                            <Link to="/">
+                                <i className="fas fa-feather-alt"></i>{' '}
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/">
+                                <i className="fas fa-home"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/search">
+                                <i className="fas fa-search"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/notifications">
+                                <i className="fas fa-bell"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/messages">
+                                <i className="fas fa-envelope"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/profile">
+                                <i className="fas fa-user"></i>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link onClick={logout} to="#">
+                                <i className="fas fa-sign-out-alt"></i>
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
             <Main />
             <aside>Side Bar</aside>
         </div>
