@@ -31,6 +31,12 @@ const userSchema = new Schema(
             type: String,
             default: '/images/users/default.png',
         },
+        agrees: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Quote',
+            },
+        ],
     },
     { timestamps: true }
 );

@@ -5,7 +5,11 @@ mongoose.set('useCreateIndex', true);
 
 const conn = mongoose.connect(
     process.env.DB,
-    { useNewUrlParser: true, useUnifiedTopology: true },
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    },
     () => {
         console.log('Database connection successful');
     }

@@ -1,4 +1,5 @@
 const Quote = require('../models/Quote');
+const User = require('../models/User');
 
 exports.getQuotes = async (req, res, next) => {
     try {
@@ -36,6 +37,50 @@ exports.createQuote = async (req, res, next) => {
         res.status(201).json({
             status: 'sucess',
             data: quote,
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 'failed',
+            message: error,
+        });
+    }
+};
+
+exports.agreeWithQuote = async (req, res, next) => {
+    try {
+        // Get user from token
+        const { user } = req;
+
+        //get quoteId
+        const { id } = req.params;
+        // Check if quote has already been liked
+
+        const isAgreed = user.agrees ? user.agrees.includes(id) : false;
+
+        // Update User likes collection with quote id
+        console.log(isAgreed, user.agrees);
+        const option = isAgreed ? '$pull' : '$addToSet';
+        await User.findByIdAndUpdate(
+            user._id,
+            {
+                [option]: { agrees: id },
+            },
+            { new: true }
+        );
+
+        // Update quote likes collection with user id
+        const updatedQuote = await Quote.findByIdAndUpdate(
+            id,
+            {
+                [option]: { agrees: user._id },
+            },
+            { new: true }
+        ).populate('quotedBy');
+
+        // sent updated post to client
+        res.status(200).json({
+            status: 'success',
+            data: updatedQuote,
         });
     } catch (error) {
         res.status(400).json({

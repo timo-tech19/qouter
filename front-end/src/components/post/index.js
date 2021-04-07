@@ -23,6 +23,8 @@ function Post() {
                     content: quote,
                 },
             });
+
+            setQuote('');
         } catch (error) {
             console.log(error.response.data);
         }

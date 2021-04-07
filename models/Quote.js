@@ -9,6 +9,16 @@ const quoteSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
         },
+        pinned: {
+            type: Boolean,
+            default: false,
+        },
+        agrees: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
     },
     { timestamps: true }
 );

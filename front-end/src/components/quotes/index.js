@@ -1,9 +1,13 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadQuotes } from '../../redux/reducers/quotes';
 import Qoute from '../quote';
 
 function Quotes() {
-    const [qoutes, setQoutes] = useState(null);
+    // const [qoutes, setQoutes] = useState(null);
+    const dispatch = useDispatch();
+    const quotes = useSelector((state) => state.quotes);
     const getQoutes = async () => {
         try {
             const token = JSON.parse(localStorage.getItem('user')).token;
@@ -14,7 +18,7 @@ function Quotes() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setQoutes(data.data);
+            dispatch(loadQuotes(data.data));
         } catch (error) {
             console.log(error.response.data);
         }
@@ -26,11 +30,13 @@ function Quotes() {
 
     return (
         <div>
-            {qoutes
-                ? qoutes.map((qoute) => {
-                      return <Qoute key={qoute._id} {...qoute} />;
-                  })
-                : null}
+            {quotes.length > 0 ? (
+                quotes.map((qoute) => {
+                    return <Qoute key={qoute._id} {...qoute} />;
+                })
+            ) : (
+                <div className="loader">Loading...</div>
+            )}
         </div>
     );
 }
