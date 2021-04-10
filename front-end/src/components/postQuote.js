@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import axios from 'axios';
-import './post.scss';
+
+import { Axios } from '../helpers/Axios';
 
 function Post() {
     const [quote, setQuote] = useState('');
@@ -11,7 +11,7 @@ function Post() {
         e.preventDefault();
 
         try {
-            await axios({
+            await Axios({
                 url: '/quotes',
                 method: 'post',
                 data: {

@@ -1,0 +1,45 @@
+form {
+    background-color: #fff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 48rem;
+
+    .form-input {
+        position: relative;
+
+        i {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            font-size: 2rem;
+        }
+    }
+
+    h2 {
+        font-size: 1.7rem;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    h4 {
+        color: red;
+        text-align: center;
+    }
+
+    p {
+        font-size: 1.3rem;
+    }
+
+    button {
+        margin-top: 1rem;
+        border: none;
+        padding: 1rem 0;
+        background-color: $color-primary;
+        border-radius: 5px;
+        color: #fff;
+    }
+}

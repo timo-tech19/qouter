@@ -1,17 +1,17 @@
-import { Axios } from '../../helpers/Axios';
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
-import { loadQuotes } from '../../redux/reducers/quotes';
 import { useSelector, useDispatch } from 'react-redux';
-import './quote.scss';
+
+import { loadQuotes } from '../redux/reducers/quotes';
+import { Axios } from '../helpers/Axios';
+
 // props: _id, content, createdAt
 function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
-    const dispatch = useDispatch();
-    const quotes = useSelector((state) => state.quotes);
     const [isAgreedActive, setIsAgreedActive] = useState(false);
 
+    const dispatch = useDispatch();
+    const quotes = useSelector((state) => state.quotes);
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
-
     const { user } = JSON.parse(localStorage.getItem('user'));
 
     const handleAgree = async () => {

@@ -6,9 +6,9 @@ import { Switch, useHistory } from 'react-router-dom';
 import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
 
 import { login } from './redux/reducers/user';
-import { Home, Login, Register } from './pages';
-
-import './App.scss';
+import Home from './pages/home';
+import Login from './pages/login';
+import Register from './pages/register';
 
 function App() {
     const user = useSelector((state) => state.user);

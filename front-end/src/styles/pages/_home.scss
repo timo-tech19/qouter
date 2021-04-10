@@ -1,5 +1,3 @@
-$color-primary: #007fff;
-
 .homepage {
     position: relative;
     display: grid;
@@ -18,7 +16,6 @@ $color-primary: #007fff;
         position: relative;
 
         nav {
-            // background-color: #fff;
             position: fixed;
             top: 0;
             left: 0;
@@ -46,7 +43,7 @@ $color-primary: #007fff;
                 font-size: 3.3rem;
                 margin-bottom: 1rem;
                 padding: 1rem;
-                color: var(--text-color);
+                color: $text-color;
                 transition: all 0.3s ease-out;
 
                 &:hover {

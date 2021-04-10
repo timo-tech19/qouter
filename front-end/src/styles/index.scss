@@ -1,0 +1,12 @@
+@import 'variables';
+@import 'base';
+
+@import 'components/button';
+@import 'components/form';
+@import 'components/loader';
+@import 'components/quote';
+@import 'components/postQuote';
+
+@import 'containers/main';
+@import 'pages/authPage';
+@import 'pages/home';

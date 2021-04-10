@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: Raleway, sans-serif;
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    color: $text-color;
+    background-color: #000;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+    width: 100%;
+    padding: 1rem 0.5rem;
+    padding-left: 3rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 1rem;
+    outline: none;
+
+    &:focus {
+        border-color: $color-primary;
+    }
+
+    &:focus ~ i {
+        color: $color-primary;
+    }
+}
+
+a {
+    color: $color-primary;
+}

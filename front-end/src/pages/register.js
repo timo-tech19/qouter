@@ -2,16 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from '../../redux/reducers/user';
-import { Axios } from '../../helpers/Axios';
+import { login } from '../redux/reducers/user';
+import { Axios } from '../helpers/Axios';
 
 function Register() {
-    // GLobal state
-    // const user = useSelector((state) => state.user);
-    const dispatch = useDispatch();
-
-    // console.log(user);
-
+    // Internal Register component states
     const [inputs, setInputs] = useState({
         firstName: '',
         lastName: '',
@@ -20,9 +15,7 @@ function Register() {
         confirmPassword: '',
         password: '',
     });
-
     const [error, setError] = useState('');
-
     const {
         firstName,
         lastName,
@@ -31,6 +24,8 @@ function Register() {
         confirmPassword,
         password,
     } = inputs;
+
+    const dispatch = useDispatch();
 
     const handleTyping = ({ target: { name, value } }) => {
         setInputs({ ...inputs, [name]: value });

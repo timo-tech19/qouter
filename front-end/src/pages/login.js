@@ -1,25 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from '../../redux/reducers/user';
+import { login } from '../redux/reducers/user';
 
-import './login.scss';
-import { useEffect } from 'react';
-import { Axios } from '../../helpers/Axios';
+import { Axios } from '../helpers/Axios';
 
 function Login() {
-    const dispatch = useDispatch();
-
     const [inputs, setInputs] = useState({
         nameOrEmail: '',
         password: '',
     });
-
     const [error, setError] = useState('');
+
+    // Show Error for 3 seconds
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
+                setError('');
+            }, 3000);
+        }
+    }, [error]);
+
+    const dispatch = useDispatch();
 
     const handleTyping = ({ target: { name, value } }) => {
         setInputs({ ...inputs, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!inputs.nameOrEmail || !inputs.password) {
+            setError('Please fill in all fields');
+        } else {
+            sendInputs(inputs);
+            setError('');
+        }
     };
 
     const sendInputs = async (inputs) => {
@@ -40,25 +57,6 @@ function Login() {
             setError(error.response.data.message);
         }
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (!inputs.nameOrEmail || !inputs.password) {
-            setError('Please fill in all fields');
-        } else {
-            sendInputs(inputs);
-            setError('');
-        }
-    };
-
-    useEffect(() => {
-        if (error) {
-            setTimeout(() => {
-                setError('');
-            }, 3000);
-        }
-    }, [error]);
 
     return (
         <div className="authPage">

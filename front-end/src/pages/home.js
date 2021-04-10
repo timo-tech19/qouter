@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import Main from '../../containers/main';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { logout } from '../../redux/reducers/user';
+import { logout } from '../redux/reducers/user';
 
-import './home.scss';
+import Main from '../containers/main';
 
 function Home() {
     const history = useHistory();

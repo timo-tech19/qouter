@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Axios } from '../../helpers/Axios';
-import { loadQuotes } from '../../redux/reducers/quotes';
-import Qoute from '../quote';
+
+import { loadQuotes } from '../redux/reducers/quotes';
+import { Axios } from '../helpers/Axios';
+
+import Qoute from './quote';
 
 function Quotes() {
     // const [qoutes, setQoutes] = useState(null);
     const dispatch = useDispatch();
     const quotes = useSelector((state) => state.quotes);
+
     const getQoutes = async () => {
         try {
             const { data } = await Axios({
@@ -20,6 +23,7 @@ function Quotes() {
         }
     };
 
+    // Get quotes when component mounts
     useEffect(() => {
         getQoutes();
     }, []);
