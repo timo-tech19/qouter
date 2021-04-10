@@ -25,7 +25,7 @@ const quoteSchema = new Schema(
                 ref: 'User',
             },
         ],
-        requoteId: { type: Schema.Types.ObjectId, ref: 'Quote' },
+        requoteData: { type: Schema.Types.ObjectId, ref: 'Quote' },
     },
     { timestamps: true }
 );

@@ -80,7 +80,7 @@ exports.requote = catchAsync(async (req, res, next) => {
     // Find and delete the a requote by current user where original quote id matches the requoteId
     const deletedQuote = await Quote.findOneAndDelete({
         quotedBy: user._id,
-        requoteId: id,
+        requoteData: id,
     });
 
     // Update User likes collection with quote id
@@ -88,7 +88,7 @@ exports.requote = catchAsync(async (req, res, next) => {
     let requote;
     // Create a new quote(requote) if no quote was deleted
     if (!deletedQuote) {
-        requote = await Quote.create({ quotedBy: user._id, requoteId: id });
+        requote = await Quote.create({ quotedBy: user._id, requoteData: id });
     }
 
     // insert requote into user collection

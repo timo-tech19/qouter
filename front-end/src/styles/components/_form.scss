@@ -4,7 +4,7 @@ form {
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 10px 20px rgba($bg-color, 0.2);
     width: 80%;
     max-width: 48rem;
 
@@ -26,7 +26,7 @@ form {
     }
 
     h4 {
-        color: red;
+        color: orangered;
         text-align: center;
     }
 

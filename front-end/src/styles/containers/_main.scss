@@ -13,6 +13,6 @@ main {
     }
 
     hr {
-        border-color: var(--text-color);
+        border-color: $text-color;
     }
 }
