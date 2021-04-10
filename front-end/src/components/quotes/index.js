@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Axios } from '../../helpers/Axios';
 import { loadQuotes } from '../../redux/reducers/quotes';
 import Qoute from '../quote';
 
@@ -10,9 +10,9 @@ function Quotes() {
     const quotes = useSelector((state) => state.quotes);
     const getQoutes = async () => {
         try {
-            const { data } = await axios({
+            const { data } = await Axios({
                 method: 'get',
-                url: 'http://localhost:5000/api/v1/quotes',
+                url: '/quotes',
             });
             dispatch(loadQuotes(data.data));
         } catch (error) {
