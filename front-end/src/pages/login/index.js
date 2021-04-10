@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import { login } from '../../redux/reducers/user';
 
 import './login.scss';
 import { useEffect } from 'react';
+import { Axios } from '../../helpers/Axios';
 
 function Login() {
     const dispatch = useDispatch();
@@ -24,9 +24,9 @@ function Login() {
 
     const sendInputs = async (inputs) => {
         try {
-            const response = await axios({
+            const response = await Axios({
                 method: 'post',
-                url: 'http://localhost:5000/api/v1/users/login',
+                url: '/users/login',
                 data: inputs,
             });
 

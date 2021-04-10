@@ -10,13 +10,9 @@ function Quotes() {
     const quotes = useSelector((state) => state.quotes);
     const getQoutes = async () => {
         try {
-            const token = JSON.parse(localStorage.getItem('user')).token;
             const { data } = await axios({
                 method: 'get',
                 url: 'http://localhost:5000/api/v1/quotes',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
             });
             dispatch(loadQuotes(data.data));
         } catch (error) {

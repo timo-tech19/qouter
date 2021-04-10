@@ -10,15 +10,10 @@ function Post() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = JSON.parse(localStorage.getItem('user')).token;
-
         try {
             await axios({
-                url: 'http://localhost:5000/api/v1/quotes',
+                url: '/quotes',
                 method: 'post',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
                 data: {
                     content: quote,
                 },

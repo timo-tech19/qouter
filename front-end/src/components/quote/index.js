@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { Axios } from '../../helpers/Axios';
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
 import { loadQuotes } from '../../redux/reducers/quotes';
@@ -12,16 +12,13 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
 
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
 
-    const { user, token } = JSON.parse(localStorage.getItem('user'));
+    const { user } = JSON.parse(localStorage.getItem('user'));
 
     const handleAgree = async () => {
         // Get updated agreed post on the server
-        const { data } = await axios({
-            url: `http://localhost:5000/api/v1/quotes/${_id}/agree`,
+        const { data } = await Axios({
+            url: `/quotes/${_id}/agree`,
             method: 'patch',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
         });
 
         // Find index of quote to update
@@ -34,12 +31,9 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
     };
 
     const handleRequote = async () => {
-        const { data } = await axios({
+        const { data } = await Axios({
             method: 'post',
-            url: `http://localhost:5000/api/v1/quotes/${_id}/requote`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            url: `/quotes/${_id}/requote`,
         });
 
         console.log(data);

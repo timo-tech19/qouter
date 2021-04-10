@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import { login } from '../../redux/reducers/user';
+import { Axios } from '../../helpers/Axios';
 
 function Register() {
     // GLobal state
@@ -38,9 +38,9 @@ function Register() {
 
     const sendInputs = async (inputs) => {
         try {
-            const response = await axios({
+            const response = await Axios({
                 method: 'post',
-                url: 'http://localhost:5000/api/v1/users/register',
+                url: '/users/register',
                 data: inputs,
             });
 
