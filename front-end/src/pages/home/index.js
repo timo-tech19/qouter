@@ -11,7 +11,7 @@ function Home() {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const logout = () => {
+    const logoutHandler = () => {
         localStorage.removeItem('user');
         dispatch(logout());
         history.push('/login');
@@ -53,7 +53,7 @@ function Home() {
                             </Link>
                         </li>
                         <li>
-                            <Link onClick={logout} to="#">
+                            <Link onClick={logoutHandler} to="#">
                                 <i className="fas fa-sign-out-alt"></i>
                             </Link>
                         </li>

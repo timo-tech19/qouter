@@ -33,6 +33,18 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
         dispatch(loadQuotes(newQuotes));
     };
 
+    const handleRequote = async () => {
+        const { data } = await axios({
+            method: 'post',
+            url: `http://localhost:5000/api/v1/quotes/${_id}/requote`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        console.log(data);
+    };
+
     useEffect(() => {
         // Check is current user has liked a post
         agrees.includes(user._id)
@@ -59,7 +71,7 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
                 <button className="action">
                     <i className="fas fa-comment-dots"></i>
                 </button>
-                <button className="action">
+                <button onClick={handleRequote} className="action">
                     <i className="fas fa-sync"></i>
                 </button>
                 <button

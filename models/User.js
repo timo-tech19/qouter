@@ -25,13 +25,18 @@ const userSchema = new Schema(
         password: {
             type: String,
             required: [true, 'User must have a password'],
-            select: false,
         },
         photoUrl: {
             type: String,
             default: '/images/users/default.png',
         },
         agrees: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Quote',
+            },
+        ],
+        requotes: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Quote',

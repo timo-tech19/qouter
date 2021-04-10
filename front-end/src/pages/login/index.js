@@ -6,6 +6,7 @@ import axios from 'axios';
 import { login } from '../../redux/reducers/user';
 
 import './login.scss';
+import { useEffect } from 'react';
 
 function Login() {
     const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function Login() {
             localStorage.setItem('user', JSON.stringify(data));
             dispatch(login(data.user));
         } catch (error) {
-            console.log({ ...error });
+            setError(error.response.data.message);
         }
     };
 
@@ -50,6 +51,14 @@ function Login() {
             setError('');
         }
     };
+
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
+                setError('');
+            }, 3000);
+        }
+    }, [error]);
 
     return (
         <div className="authPage">

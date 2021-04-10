@@ -19,6 +19,13 @@ const quoteSchema = new Schema(
                 ref: 'User',
             },
         ],
+        requoters: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        requoteId: { type: Schema.Types.ObjectId, ref: 'Quote' },
     },
     { timestamps: true }
 );
