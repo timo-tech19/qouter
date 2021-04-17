@@ -23,37 +23,37 @@ function Home() {
                     <ul>
                         <li className="logo">
                             <Link to="/">
-                                <i className="fas fa-feather-alt"></i>{' '}
+                                <ion-icon name="snow"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link to="/">
-                                <i className="fas fa-home"></i>
+                                <ion-icon name="home-outline"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link to="/search">
-                                <i className="fas fa-search"></i>
+                                <ion-icon name="search-outline"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link to="/notifications">
-                                <i className="fas fa-bell"></i>
+                                <ion-icon name="notifications-outline"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link to="/messages">
-                                <i className="fas fa-envelope"></i>
+                                <ion-icon name="chatbox-outline"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link to="/profile">
-                                <i className="fas fa-user"></i>
+                                <ion-icon name="person-outline"></ion-icon>
                             </Link>
                         </li>
                         <li>
                             <Link onClick={logoutHandler} to="#">
-                                <i className="fas fa-sign-out-alt"></i>
+                                <ion-icon name="log-out-outline"></ion-icon>
                             </Link>
                         </li>
                     </ul>

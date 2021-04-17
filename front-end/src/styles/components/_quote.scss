@@ -14,7 +14,7 @@
         padding: 2rem 0;
         text-align: center;
         position: relative;
-        color: $text-color-dark;
+        color: #fff;
         font-size: 1.8rem;
         font-weight: 700;
 
@@ -55,7 +55,7 @@
             background-color: transparent;
             box-shadow: none;
             border-radius: 0px;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: $text-color;
 
             span {
@@ -66,8 +66,12 @@
                 color: $color-primary;
             }
 
-            &:nth-child(2):hover {
-                color: yellow;
+            &:nth-child(2) {
+                font-size: 2.2rem;
+
+                &:hover {
+                    color: #007fff;
+                }
             }
 
             &:nth-child(3) {

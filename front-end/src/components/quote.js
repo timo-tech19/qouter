@@ -54,7 +54,9 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
             </header>
             <blockquote>
                 <i className="fas fa-quote-left"></i>
-                <i className="content">{content}</i>
+                <q className="content">
+                    <i>{content}</i>
+                </q>
             </blockquote>
             <figcaption>
                 - {quotedBy.firstName} {quotedBy.lastName}
@@ -63,20 +65,20 @@ function Qoute({ _id, content, createdAt, quotedBy, agrees }) {
 
             <footer>
                 <button className="action">
-                    <i className="fas fa-comment-dots"></i>
+                    <ion-icon name="chatbubbles"></ion-icon>
                 </button>
                 <button onClick={handleRequote} className="action">
-                    <i className="fas fa-sync"></i>
+                    <ion-icon name="repeat-outline"></ion-icon>
                 </button>
                 <button
                     onClick={handleAgree}
                     className={`action ${isAgreedActive ? 'active' : ''}`}
                 >
-                    <i className="fas fa-thumbs-up"></i>
+                    <ion-icon name="thumbs-up"></ion-icon>
                     <span>{agrees.length || ''}</span>
                 </button>
                 <button className="action">
-                    <i className="fas fa-thumbs-down"></i>
+                    <ion-icon name="thumbs-down"></ion-icon>
                 </button>
             </footer>
         </figure>

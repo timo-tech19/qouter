@@ -72,7 +72,7 @@ function Login() {
                         onChange={handleTyping}
                         required
                     />
-                    <i className="far fa-user"></i>
+                    <ion-icon name="mail-outline"></ion-icon>
                 </div>
                 <div className="form-input">
                     <input
@@ -83,7 +83,7 @@ function Login() {
                         onChange={handleTyping}
                         required
                     />
-                    <i className="fas fa-lock"></i>
+                    <ion-icon name="lock-closed-outline"></ion-icon>
                 </div>
 
                 <p>
