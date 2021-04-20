@@ -4,6 +4,20 @@
     border-radius: 5px;
     background-color: rgba($color-primary, 0.1);
 
+    .requote-title {
+        display: flex;
+        align-items: center;
+        background-color: rgba($bg-color, 0.4);
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 5px;
+        span {
+            font-size: 1.3rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+    }
+
     header {
         display: flex;
         justify-content: space-between;
@@ -57,6 +71,8 @@
             border-radius: 0px;
             font-size: 1.8rem;
             color: $text-color;
+            display: flex;
+            align-items: center;
 
             span {
                 margin-left: 0.5rem;
@@ -67,7 +83,9 @@
             }
 
             &:nth-child(2) {
-                font-size: 2.2rem;
+                &.active {
+                    color: #007fff;
+                }
 
                 &:hover {
                     color: #007fff;

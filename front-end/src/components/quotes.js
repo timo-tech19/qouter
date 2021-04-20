@@ -31,8 +31,8 @@ function Quotes() {
     return (
         <div>
             {quotes.length > 0 ? (
-                quotes.map((qoute) => {
-                    return <Qoute key={qoute._id} {...qoute} />;
+                quotes.map((quote) => {
+                    return <Qoute key={quote._id} {...quote} />;
                 })
             ) : (
                 <div className="loader">Loading...</div>

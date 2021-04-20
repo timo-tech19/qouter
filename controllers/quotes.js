@@ -6,6 +6,11 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
     const quotes = await Quote.find()
         .select('-__v')
         .populate('quotedBy')
+        .populate('requoteData')
+        .populate({
+            path: 'requoteData',
+            populate: { path: 'quotedBy' },
+        })
         .sort({ createdAt: -1 });
 
     if (!quotes) {
@@ -88,7 +93,10 @@ exports.requote = catchAsync(async (req, res, next) => {
     let requote;
     // Create a new quote(requote) if no quote was deleted
     if (!deletedQuote) {
-        requote = await Quote.create({ quotedBy: user._id, requoteData: id });
+        requote = await Quote.create({
+            quotedBy: user._id,
+            requoteData: id,
+        });
     }
 
     // insert requote into user collection
@@ -106,7 +114,9 @@ exports.requote = catchAsync(async (req, res, next) => {
             [option]: { requoters: user._id },
         },
         { new: true }
-    ).populate('quotedBy');
+    )
+        .populate('quotedBy')
+        .populate('requoteData');
 
     res.status(201).json({
         status: 'success',

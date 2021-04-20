@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { logout } from '../redux/reducers/user';
 
@@ -9,6 +9,7 @@ import Main from '../containers/main';
 function Home() {
     const history = useHistory();
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
 
     const logoutHandler = () => {
         localStorage.removeItem('user');
@@ -61,7 +62,9 @@ function Home() {
             </div>
 
             <Main />
-            <aside>Side Bar</aside>
+            <aside>
+                {user.firstName} {user.lastName}
+            </aside>
         </div>
     );
 }
