@@ -29,7 +29,16 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
 
 exports.createQuote = catchAsync(async (req, res, next) => {
     const { content } = req.body;
-    const quote = await Quote.create({ content, quotedBy: req.user._id });
+    let quote = await Quote.create({ content, quotedBy: req.user._id });
+
+    quote = await quote
+        .populate('quotedBy')
+        .populate('requoteData')
+        .populate({
+            path: 'requoteData',
+            populate: { path: 'quotedBy' },
+        })
+        .execPopulate();
 
     res.status(201).json({
         status: 'sucess',
@@ -116,7 +125,11 @@ exports.requote = catchAsync(async (req, res, next) => {
         { new: true }
     )
         .populate('quotedBy')
-        .populate('requoteData');
+        .populate('requoteData')
+        .populate({
+            path: 'requoteData',
+            populate: { path: 'quotedBy' },
+        });
 
     res.status(201).json({
         status: 'success',

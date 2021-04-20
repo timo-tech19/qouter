@@ -1,17 +1,20 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
+import { loadQuotes } from '../redux/reducers/quotes';
 import { Axios } from '../helpers/Axios';
 
 function Post() {
     const [quote, setQuote] = useState('');
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
+    const quotes = useSelector((state) => state.quotes);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await Axios({
+            const { data } = await Axios({
                 url: '/quotes',
                 method: 'post',
                 data: {
@@ -20,8 +23,11 @@ function Post() {
             });
 
             setQuote('');
+            const newQuotes = [data.data, ...quotes];
+            dispatch(loadQuotes(newQuotes));
         } catch (error) {
-            console.log(error.response.data);
+            console.log(error);
+            // console.log(error.response.data);
         }
     };
 
