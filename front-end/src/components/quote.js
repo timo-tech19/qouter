@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadQuotes } from '../redux/reducers/quotes';
 import { Axios } from '../helpers/Axios';
 
+import Comment from '../components/comment';
+
 // props: _id, content, createdAt
 function Qoute({
     _id,
@@ -14,6 +16,7 @@ function Qoute({
     agrees,
     requoters,
     requoteData,
+    comments,
 }) {
     // if (requoteData) {
     //     console.log(requoteData.content);
@@ -22,20 +25,22 @@ function Qoute({
     const [isAgreedActive, setIsAgreedActive] = useState(false);
     const [isReqoutedActive, setIsReqoutedActive] = useState(false);
 
+    const [toComment, setToComment] = useState(false);
+
     const dispatch = useDispatch();
     const quotes = useSelector((state) => state.quotes);
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
     const { user } = JSON.parse(localStorage.getItem('user'));
 
-    const updateQuotes = (quotes, updateQuote) => {
+    const updateQuotes = (quotes, updatedQuote) => {
         // Find index of quote to update
         const index = quotes.findIndex(
-            (quote) => quote._id === updateQuote._id
+            (quote) => quote._id === updatedQuote._id
         );
 
         // Update found quote with new object containing new agrees array
         const newQuotes = [...quotes];
-        newQuotes[index] = updateQuote;
+        newQuotes[index] = updatedQuote;
         dispatch(loadQuotes(newQuotes));
     };
 
@@ -56,7 +61,6 @@ function Qoute({
         });
 
         // Update state with updatedQuote
-        console.log(data);
         updateQuotes(quotes, data.data);
     };
 
@@ -100,8 +104,12 @@ function Qoute({
             </figcaption>
 
             <footer>
-                <button className="action">
+                <button
+                    className="action"
+                    onClick={() => setToComment((prevState) => !prevState)}
+                >
                     <ion-icon name="chatbubbles"></ion-icon>
+                    <span>{comments.length || ''}</span>
                 </button>
                 <button
                     onClick={handleRequote}
@@ -121,6 +129,13 @@ function Qoute({
                     <ion-icon name="thumbs-down"></ion-icon>
                 </button>
             </footer>
+            {toComment ? (
+                <Comment
+                    quoteId={_id}
+                    setToComment={setToComment}
+                    updateQuotes={updateQuotes}
+                />
+            ) : null}
         </figure>
     );
 }

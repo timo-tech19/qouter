@@ -43,7 +43,7 @@ function Post() {
                     value={quote}
                 />
             </div>
-            <button disabled={!quote ? true : false} onClick={handleSubmit}>
+            <button disabled={!quote} onClick={handleSubmit}>
                 Quote
             </button>
             <hr />
