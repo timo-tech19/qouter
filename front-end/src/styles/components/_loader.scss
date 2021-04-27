@@ -5,7 +5,7 @@
 }
 .loader {
     color: $color-primary;
-    font-size: 11px;
+    font-size: 6px;
     text-indent: -99999em;
     margin: 55px auto;
     position: relative;
@@ -30,8 +30,8 @@
     left: -0.1em;
     -webkit-transform-origin: 5.1em 5.1em;
     transform-origin: 5.1em 5.1em;
-    -webkit-animation: load2 2s infinite ease 1.5s;
-    animation: load2 2s infinite ease 1.5s;
+    -webkit-animation: load2 1s infinite ease 1.5s;
+    animation: load2 1s infinite ease 1.5s;
 }
 .loader:after {
     width: 5.2em;
@@ -42,8 +42,8 @@
     left: 4.9em;
     -webkit-transform-origin: 0.1em 5.1em;
     transform-origin: 0.1em 5.1em;
-    -webkit-animation: load2 2s infinite ease;
-    animation: load2 2s infinite ease;
+    -webkit-animation: load2 1s infinite ease;
+    animation: load2 1s infinite ease;
 }
 @-webkit-keyframes load2 {
     0% {

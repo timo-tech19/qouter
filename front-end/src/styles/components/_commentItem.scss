@@ -1,0 +1,33 @@
+.comment {
+    display: flex;
+    margin-bottom: 1rem;
+
+    padding: 1rem;
+    background-color: rgba($color-primary, 0.03);
+    border-radius: 2px;
+    .user-image {
+        width: 5rem;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 2rem;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .content {
+        flex: 1;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4rem;
+            color: rgba($text-color-light, 0.3);
+        }
+
+        .body {
+            margin-top: 1rem;
+        }
+    }
+}

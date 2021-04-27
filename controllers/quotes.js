@@ -27,6 +27,37 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getQuote = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+
+    const quote = await Quote.findById(id)
+        .select('-__v')
+        .populate('quotedBy')
+        .populate('requoteData')
+        .populate('comments')
+        .populate({
+            path: 'comments',
+            populate: { path: 'commentBy' },
+        })
+        .populate({
+            path: 'requoteData',
+            populate: { path: 'quotedBy' },
+        })
+        .sort({ createdAt: -1 });
+
+    if (!quote) {
+        res.status(404).json({
+            status: 'failed',
+            message: 'Quote no found',
+        });
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: quote,
+    });
+});
+
 exports.createQuote = catchAsync(async (req, res, next) => {
     const { content } = req.body;
     let quote = await Quote.create({ content, quotedBy: req.user._id });

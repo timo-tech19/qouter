@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { loadQuotes } from '../redux/reducers/quotes';
 import { Axios } from '../helpers/Axios';
@@ -31,6 +32,7 @@ function Qoute({
     const quotes = useSelector((state) => state.quotes);
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
     const { user } = JSON.parse(localStorage.getItem('user'));
+    const history = useHistory();
 
     const updateQuotes = (quotes, updatedQuote) => {
         // Find index of quote to update
@@ -64,6 +66,10 @@ function Qoute({
         updateQuotes(quotes, data.data);
     };
 
+    const showQuotePage = (e) => {
+        if (e.target.className === 'quote') history.push(`/quote/${_id}`);
+    };
+
     useEffect(() => {
         // Check is current user has liked a post
         agrees.includes(user._id)
@@ -79,7 +85,7 @@ function Qoute({
     const quoter = requoteData ? requoteData.quotedBy : quotedBy;
 
     return (
-        <figure className="quote">
+        <figure className="quote" onClick={showQuotePage}>
             {requoteData ? (
                 <p className="requote-title">
                     <ion-icon name="repeat-outline"></ion-icon>

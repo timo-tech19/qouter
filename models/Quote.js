@@ -26,6 +26,12 @@ const quoteSchema = new Schema(
             },
         ],
         requoteData: { type: Schema.Types.ObjectId, ref: 'Quote' },
+        comments: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Comment',
+            },
+        ],
     },
     { timestamps: true }
 );
