@@ -43,7 +43,7 @@ function Login() {
         try {
             const response = await Axios({
                 method: 'post',
-                url: '/users/login',
+                url: '/auth/login',
                 data: inputs,
             });
 

@@ -35,7 +35,7 @@ function Register() {
         try {
             const response = await Axios({
                 method: 'post',
-                url: '/users/register',
+                url: '/auth/register',
                 data: inputs,
             });
 

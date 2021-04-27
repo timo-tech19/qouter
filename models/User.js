@@ -30,6 +30,10 @@ const userSchema = new Schema(
             type: String,
             default: '/images/users/default.png',
         },
+        coverPhotoUrl: {
+            type: String,
+            default: '/images/users/cover-default.jpg',
+        },
         agrees: [
             {
                 type: Schema.Types.ObjectId,

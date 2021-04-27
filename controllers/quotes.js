@@ -1,9 +1,15 @@
 const Quote = require('../models/Quote');
 const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.getQuotes = catchAsync(async (req, res, next) => {
-    const quotes = await Quote.find()
+    const { userId } = req.params;
+    let queryObj = {};
+
+    if (userId) queryObj = { ...queryObj, quotedBy: userId };
+
+    const quotes = await Quote.find(queryObj)
         .select('-__v')
         .populate('quotedBy')
         .populate('requoteData')
@@ -27,6 +33,21 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
     });
 });
 
+// exports.getUserQuotes = catchAsync(async (req, res, next) => {
+//     const { userId } = req.params;
+
+//     const quotes = await Quote.find({ quotedBy: userId });
+
+//     if (!quotes) {
+//         return next(new AppError('User quotes not found', 404));
+//     }
+
+//     res.status(200).json({
+//         status: 'success',
+//         results: quotes.length,
+//         data: quotes,
+//     });
+// });
 exports.getQuote = catchAsync(async (req, res, next) => {
     const { id } = req.params;
 

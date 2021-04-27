@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import { loadQuotes } from '../redux/reducers/quotes';
 import { Axios } from '../helpers/Axios';
@@ -95,7 +95,9 @@ function Qoute({
                 </p>
             ) : null}
             <header>
-                <p>@{quoter.userName}</p>
+                <Link to={`/profile/${quoter.userName}`}>
+                    @{quoter.userName}
+                </Link>
                 <p>{relativeTime}</p>
             </header>
             <blockquote>

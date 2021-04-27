@@ -8,6 +8,7 @@ import { logout } from '../redux/reducers/user';
 
 import Main from '../containers/main';
 import QuoteContainer from '../containers/quote';
+import Profile from '../containers/profile';
 
 function Home() {
     const history = useHistory();
@@ -65,6 +66,12 @@ function Home() {
                 </nav>
             </div>
             <Switch>
+                <ProtectedRoute user={user} exact path="/profile/:userName">
+                    <Profile />
+                </ProtectedRoute>
+                <ProtectedRoute user={user} exact path="/profile">
+                    <Profile profileUser={user} />
+                </ProtectedRoute>
                 <ProtectedRoute user={user} exact path="/quote/:quoteId">
                     <QuoteContainer />
                 </ProtectedRoute>
