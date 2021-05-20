@@ -40,6 +40,18 @@ const userSchema = new Schema(
                 ref: 'Quote',
             },
         ],
+        followers: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        following: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
         requotes: [
             {
                 type: Schema.Types.ObjectId,

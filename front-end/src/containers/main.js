@@ -1,11 +1,13 @@
 import PostQuote from '../components/postQuote';
 import Quotes from '../components/quotes';
+import Modal from '../components/modal';
 
 function Main() {
     return (
         <main>
             <h1>Home</h1>
             <hr />
+            {/* <Modal /> */}
             <PostQuote />
             <Quotes />
         </main>

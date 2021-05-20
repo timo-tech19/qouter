@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Switch, useHistory, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ProtectedRoute } from '../helpers/routes';
@@ -9,12 +9,12 @@ import { logout } from '../redux/reducers/user';
 import Main from '../containers/main';
 import QuoteContainer from '../containers/quote';
 import Profile from '../containers/profile';
+import Search from '../containers/search';
 
 function Home() {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const { url, path } = useRouteMatch();
 
     const logoutHandler = () => {
         localStorage.removeItem('user');
@@ -66,9 +66,14 @@ function Home() {
                 </nav>
             </div>
             <Switch>
-                <ProtectedRoute user={user} exact path="/profile/:userName">
-                    <Profile />
+                <ProtectedRoute user={user} exact path="/search">
+                    <Search />
                 </ProtectedRoute>
+                {/* For other users */}
+                <ProtectedRoute user={user} exact path="/profile/:userName">
+                    <Profile activeUser={user} />
+                </ProtectedRoute>
+                {/* For active user */}
                 <ProtectedRoute user={user} exact path="/profile">
                     <Profile profileUser={user} />
                 </ProtectedRoute>

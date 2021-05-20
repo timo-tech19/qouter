@@ -109,7 +109,7 @@ exports.agreeWithQuote = catchAsync(async (req, res, next) => {
     const isAgreed = user.agrees ? user.agrees.includes(id) : false;
 
     // Update User likes collection with quote id
-    console.log(isAgreed, user.agrees);
+    // console.log(isAgreed, user.agrees);
     const option = isAgreed ? '$pull' : '$addToSet';
     await User.findByIdAndUpdate(
         user._id,
