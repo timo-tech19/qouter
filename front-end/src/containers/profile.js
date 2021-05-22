@@ -1,19 +1,41 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
 
+import { toggleModal } from '../redux/reducers/modal';
 import { login } from '../redux/reducers/user';
 import { useParams, useHistory } from 'react-router-dom';
 import Qoute from '../components/quote';
 import { Axios } from '../helpers/Axios';
+import Modal from '../components/modal';
+import { readURL } from '../helpers/functions';
 // import ImageCrop from '../components/imageCrop';
 
 function Profile({ profileUser, activeUser }) {
     const [quotes, setQuotes] = useState([]);
     const [user, setUser] = useState(null);
+    const [src, setSrc] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(null);
     const { userName } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     // const activeUser = useSelector((state) => state.user);
+    const modal = useSelector((state) => state.modal);
+
+    const uploadRef = useRef(null);
+    const cropperRef = useRef(null);
+
+    const onCrop = () => {
+        const imageElement = cropperRef.current;
+        const cropper = imageElement.cropper;
+        // console.log(cropper.getCroppedCanvas().toDataURL());
+        setCroppedImage(cropper.getCroppedCanvas().toDataURL());
+    };
+
+    const upload = () => {
+        console.log(croppedImage);
+    };
 
     const handleFollow = async () => {
         try {
@@ -49,6 +71,10 @@ function Profile({ profileUser, activeUser }) {
     };
 
     useEffect(() => {
+        if (modal) readURL(uploadRef.current, setSrc);
+    });
+
+    useEffect(() => {
         getUser(profileUser, activeUser);
         getQuotes();
 
@@ -68,7 +94,9 @@ function Profile({ profileUser, activeUser }) {
                         <div className="user-image">
                             <img src={user.photoUrl} alt="User" />
                             {profileUser ? (
-                                <button>
+                                <button
+                                    onClick={() => dispatch(toggleModal(true))}
+                                >
                                     <ion-icon name="camera-reverse-outline"></ion-icon>
                                 </button>
                             ) : null}
@@ -119,7 +147,21 @@ function Profile({ profileUser, activeUser }) {
                     </div>
                 </header>
             ) : null}
-
+            {modal ? (
+                <Modal done={upload}>
+                    <input type="file" ref={uploadRef} />
+                    <div className="preview">
+                        <Cropper
+                            src={src}
+                            style={{ height: 300, width: '70%' }}
+                            initialAspectRatio={1 / 1}
+                            guides={false}
+                            crop={onCrop}
+                            ref={cropperRef}
+                        />
+                    </div>
+                </Modal>
+            ) : null}
             <div className="quotes-container">
                 {quotes.map((quote) => (
                     <Qoute key={quote._id} {...quote} />

@@ -18,6 +18,10 @@ exports.getUser = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.updateUser = catchAsync(async (req, res, next) => {
+    const { photo } = req.files;
+});
+
 exports.followUser = catchAsync(async (req, res, next) => {
     // userId from param
     const { userId } = req.params;
