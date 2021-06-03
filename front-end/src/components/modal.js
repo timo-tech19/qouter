@@ -16,7 +16,14 @@ function Modal({ children, done }) {
                     {children || 'place content in here'}
                 </div>
                 <div className="actions">
-                    <button onClick={done}>Done</button>
+                    <button
+                        onClick={() => {
+                            dispatch(toggleModal(false));
+                            done();
+                        }}
+                    >
+                        Done
+                    </button>
                     <button onClick={() => dispatch(toggleModal(false))}>
                         Cancel
                     </button>

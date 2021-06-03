@@ -1,0 +1,16 @@
+.new-chat {
+    .search-form {
+        display: flex;
+        align-items: center;
+    }
+    .chat-search {
+        margin-left: 2rem;
+        flex: 1;
+        margin-top: 1rem;
+    }
+
+    .create-chat {
+        display: block;
+        margin: 2rem auto 0;
+    }
+}

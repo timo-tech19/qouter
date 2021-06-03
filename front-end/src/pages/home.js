@@ -10,6 +10,8 @@ import Main from '../containers/main';
 import QuoteContainer from '../containers/quote';
 import Profile from '../containers/profile';
 import Search from '../containers/search';
+import Chats from '../containers/chats';
+import NewChat from '../containers/newChat';
 
 function Home() {
     const history = useHistory();
@@ -48,7 +50,7 @@ function Home() {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/messages">
+                            <Link to="/chats">
                                 <ion-icon name="chatbox-outline"></ion-icon>
                             </Link>
                         </li>
@@ -66,6 +68,12 @@ function Home() {
                 </nav>
             </div>
             <Switch>
+                <ProtectedRoute user={user} exact path="/new-chat">
+                    <NewChat />
+                </ProtectedRoute>
+                <ProtectedRoute user={user} exact path="/chats">
+                    <Chats />
+                </ProtectedRoute>
                 <ProtectedRoute user={user} exact path="/search">
                     <Search />
                 </ProtectedRoute>

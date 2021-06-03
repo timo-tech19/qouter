@@ -2,6 +2,27 @@
 const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, res, cb) => {
+            cb(null, 'front-end/public/images/users');
+        },
+        filename: (req, res, cb) => {
+            cb(null, `user-${req.user.id}-${Date.now()}.jpeg`);
+        },
+    }),
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image')) {
+            cb(null, true);
+        } else {
+            cb(
+                new AppError('not an image! please upload only images', 400),
+                false
+            );
+        }
+    },
+});
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userName } = req.params;
@@ -18,8 +39,24 @@ exports.getUser = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.updateUser = catchAsync(async (req, res, next) => {
-    const { photo } = req.files;
+exports.upload = upload.single('userPhoto');
+exports.uploadPhoto = catchAsync(async (req, res, next) => {
+    if (!req.file) return next(new AppError('No image uploaded', 400));
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+        photoUrl: `/images/users/${req.file.filename}`,
+    });
+    res.status(200).json({
+        status: 'sucess',
+        data: updatedUser,
+    });
+
+    // req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+    // await sharp(req.file.buffer)
+    //     .resize(500, 500)
+    //     .toFormat('jpeg')
+    //     .jpeg({ quality: 80 })
+    //     .toFile(`public/img/users/${req.file.filename}`);
+    // next();
 });
 
 exports.followUser = catchAsync(async (req, res, next) => {

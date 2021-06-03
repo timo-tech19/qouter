@@ -30,11 +30,26 @@ function Profile({ profileUser, activeUser }) {
         const imageElement = cropperRef.current;
         const cropper = imageElement.cropper;
         // console.log(cropper.getCroppedCanvas().toDataURL());
-        setCroppedImage(cropper.getCroppedCanvas().toDataURL());
+        cropper.getCroppedCanvas().toBlob((blob) => setCroppedImage(blob));
     };
 
-    const upload = () => {
-        console.log(croppedImage);
+    const upload = async () => {
+        const formData = new FormData();
+        // formData.append('name', 'photo');
+        formData.append('userPhoto', croppedImage);
+        try {
+            const { data } = await Axios({
+                url: `/users/${profileUser._id}/upload-photo`,
+                method: 'patch',
+                data: formData,
+                headers: {
+                    'content-type': 'multipart/form-data',
+                },
+            });
+            setUser(data.data);
+        } catch (error) {
+            console.log(error.response);
+        }
     };
 
     const handleFollow = async () => {
@@ -149,7 +164,7 @@ function Profile({ profileUser, activeUser }) {
             ) : null}
             {modal ? (
                 <Modal done={upload}>
-                    <input type="file" ref={uploadRef} />
+                    <input type="file" ref={uploadRef} name="photo" />
                     <div className="preview">
                         <Cropper
                             src={src}

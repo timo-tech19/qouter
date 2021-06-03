@@ -1,0 +1,20 @@
+.chats {
+    h1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0 0;
+    }
+
+    .add-chat-btn {
+        border: none;
+        padding: 0.5rem;
+        background-color: transparent;
+        border-radius: 100%;
+        color: #fff;
+        outline: none;
+        transition: transform 0.2s ease;
+        font-size: 2rem;
+        margin-right: 2rem;
+    }
+}
