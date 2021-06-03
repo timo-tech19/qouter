@@ -85,26 +85,26 @@
 
             &:nth-child(2) {
                 &.active {
-                    color: #007fff;
+                    color: #32cd32;
                 }
 
                 &:hover {
-                    color: #007fff;
+                    color: #32cd32;
                 }
             }
 
             &:nth-child(3) {
                 &.active {
-                    color: #32cd32;
+                    color: crimson;
                 }
 
                 &:hover {
-                    color: #32cd32;
+                    color: crimson;
                 }
             }
 
             &:nth-child(4):hover {
-                color: orangered;
+                color: $color-primary;
             }
         }
     }

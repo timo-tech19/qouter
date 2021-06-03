@@ -130,11 +130,11 @@ function Qoute({
                     onClick={handleAgree}
                     className={`action ${isAgreedActive ? 'active' : ''}`}
                 >
-                    <ion-icon name="thumbs-up"></ion-icon>
+                    <ion-icon name="heart"></ion-icon>
                     <span>{agrees.length || ''}</span>
                 </button>
                 <button className="action">
-                    <ion-icon name="thumbs-down"></ion-icon>
+                    <ion-icon name="share-social-outline"></ion-icon>
                 </button>
             </footer>
             {toComment ? (
