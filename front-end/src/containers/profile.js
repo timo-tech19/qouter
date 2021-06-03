@@ -20,6 +20,8 @@ function Profile({ profileUser, activeUser }) {
     const { userName } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const userAuth = JSON.parse(localStorage.getItem('user'));
     // const activeUser = useSelector((state) => state.user);
     const modal = useSelector((state) => state.modal);
 
@@ -47,6 +49,9 @@ function Profile({ profileUser, activeUser }) {
                 },
             });
             setUser(data.data);
+            dispatch(login(data.data));
+            userAuth.user = data.data;
+            localStorage.setItem('user', JSON.stringify(userAuth));
         } catch (error) {
             console.log(error.response);
         }

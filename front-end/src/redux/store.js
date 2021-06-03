@@ -11,7 +11,6 @@ const store = configureStore({
         quotes: quotesReducer,
         modal: modalReducer,
     },
-    middleware: [logger],
 });
 
 export default store;

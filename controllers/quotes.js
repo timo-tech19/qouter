@@ -5,6 +5,7 @@ const AppError = require('../utils/appError');
 
 exports.getQuotes = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
+    console.log(req.user);
     let queryObj = {};
 
     if (userId) queryObj = { ...queryObj, quotedBy: userId };

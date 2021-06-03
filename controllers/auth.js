@@ -26,6 +26,8 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError('Invalid Email or Password', 401));
     }
 
+    req.user = user;
+
     user.createdAt = undefined;
     user.updatedAt = undefined;
     user.password = undefined;
@@ -37,14 +39,8 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.register = catchAsync(async (req, res, next) => {
-    const {
-        firstName,
-        lastName,
-        userName,
-        email,
-        confirmPassword,
-        password,
-    } = req.body;
+    const { firstName, lastName, userName, email, confirmPassword, password } =
+        req.body;
     // check if user exists
     const conflictUser = await User.findOne({
         $or: [{ userName }, { email }],

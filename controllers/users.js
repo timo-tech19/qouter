@@ -45,6 +45,8 @@ exports.uploadPhoto = catchAsync(async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(req.user._id, {
         photoUrl: `/images/users/${req.file.filename}`,
     });
+    req.user = updatedUser;
+
     res.status(200).json({
         status: 'sucess',
         data: updatedUser,
