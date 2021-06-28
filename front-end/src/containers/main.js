@@ -7,7 +7,6 @@ function Main() {
         <main>
             <h1>Home</h1>
             <hr />
-            {/* <Modal /> */}
             <PostQuote />
             <Quotes />
         </main>

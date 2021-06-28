@@ -1,11 +1,6 @@
 import axios from 'axios';
 
-const user = JSON.parse(localStorage.getItem('user'));
-let token;
-
-if (user) {
-    token = user.token;
-}
+const token = JSON.parse(localStorage.getItem('userToken'));
 
 const Axios = axios.create({
     baseURL: 'http://localhost:5000/api/v1',

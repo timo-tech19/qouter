@@ -2,15 +2,61 @@
     .search-form {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+
+        .selected-user-names {
+            padding: 0.5rem;
+            background-color: lighten($bg-color, $amount: 7);
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+
+            ion-icon {
+                margin-left: 0.5rem;
+            }
+        }
     }
     .chat-search {
         margin-left: 2rem;
         flex: 1;
         margin-top: 1rem;
+        min-width: 250px;
     }
 
     .create-chat {
         display: block;
         margin: 2rem auto 0;
+    }
+
+    .users {
+        padding: 2rem;
+        .user {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: lighten($bg-color, 7);
+            }
+
+            img {
+                width: 5rem;
+                height: 5rem;
+                border-radius: 50%;
+                margin-left: 0.5rem;
+            }
+
+            .name {
+                color: $text-color-light;
+                margin-left: 2rem;
+            }
+
+            .username {
+                margin-left: 1rem;
+                color: $text-color;
+            }
+        }
     }
 }

@@ -1,28 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { login } from '../redux/reducers/user';
+import { loginUser, loginError } from '../redux/reducers/user';
 
-import { Axios } from '../helpers/Axios';
+// import { Axios } from '../helpers/Axios';
 
 function Login() {
     const [inputs, setInputs] = useState({
         nameOrEmail: '',
         password: '',
     });
-    const [error, setError] = useState('');
+    const error = useSelector((state) => state.user.error);
+    const dispatch = useDispatch();
 
     // Show Error for 3 seconds
     useEffect(() => {
         if (error) {
             setTimeout(() => {
-                setError('');
+                dispatch(loginError(''));
             }, 3000);
         }
-    }, [error]);
-
-    const dispatch = useDispatch();
+    }, [error, dispatch]);
 
     const handleTyping = ({ target: { name, value } }) => {
         setInputs({ ...inputs, [name]: value });
@@ -31,30 +30,11 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // Check if user input fields have values
         if (!inputs.nameOrEmail || !inputs.password) {
-            setError('Please fill in all fields');
+            dispatch(loginError('Please fill in all fields'));
         } else {
-            sendInputs(inputs);
-            setError('');
-        }
-    };
-
-    const sendInputs = async (inputs) => {
-        try {
-            const response = await Axios({
-                method: 'post',
-                url: '/auth/login',
-                data: inputs,
-            });
-
-            if (response.status !== 200) {
-                throw new Error(response.data);
-            }
-            const { data } = response.data;
-            localStorage.setItem('user', JSON.stringify(data));
-            dispatch(login(data.user));
-        } catch (error) {
-            setError(error.response.data.message);
+            dispatch(loginUser(inputs));
         }
     };
 

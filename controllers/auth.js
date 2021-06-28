@@ -11,6 +11,20 @@ const issueJWT = async (id) => {
     });
 };
 
+exports.authorizeUser = catchAsync(async (req, res, next) => {
+    if (!req.user) {
+        res.status(404).json({
+            status: 'success',
+            message: 'Something went wrong :(, please login again',
+        });
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: req.user,
+    });
+});
+
 exports.login = catchAsync(async (req, res, next) => {
     const { nameOrEmail, password } = req.body;
     const user = await User.findOne({

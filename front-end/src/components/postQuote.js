@@ -1,40 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { loadQuotes } from '../redux/reducers/quotes';
-import { Axios } from '../helpers/Axios';
+import { postQuote } from '../redux/reducers/quotes';
 
 function Post() {
     const [quote, setQuote] = useState('');
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
-    const quotes = useSelector((state) => state.quotes);
+    const userPhoto = useSelector((state) => state.user.data.photoUrl);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const { data } = await Axios({
-                url: '/quotes',
-                method: 'post',
-                data: {
-                    content: quote,
-                },
-            });
-
-            setQuote('');
-            const newQuotes = [data.data, ...quotes];
-            dispatch(loadQuotes(newQuotes));
-        } catch (error) {
-            console.log(error);
-            // console.log(error.response.data);
-        }
+        dispatch(postQuote(quote));
+        setQuote('');
     };
 
     return (
         <div className="post">
             <div>
-                <img src={user.photoUrl} alt="User profile" />
+                <img src={userPhoto} alt="User profile" />
                 <textarea
                     onChange={({ target }) => {
                         setQuote(target.value);

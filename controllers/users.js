@@ -24,6 +24,24 @@ const upload = multer({
     },
 });
 
+exports.getUsers = catchAsync(async (req, res, next) => {
+    const { term } = req.body;
+
+    const users = await User.find({
+        $or: [
+            { userName: { $regex: term, $options: 'i' } },
+            { firstName: { $regex: term, $options: 'i' } },
+            { lastName: { $regex: term, $options: 'i' } },
+        ],
+    });
+
+    res.status(200).json({
+        status: 'success',
+        results: users.length,
+        data: users,
+    });
+});
+
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userName } = req.params;
 

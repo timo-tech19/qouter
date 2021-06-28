@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from '../redux/reducers/user';
-import { Axios } from '../helpers/Axios';
+import { registerUser } from '../redux/reducers/user';
+// import { Axios } from '../helpers/Axios';
 
 function Register() {
     // Internal Register component states
@@ -16,14 +16,9 @@ function Register() {
         password: '',
     });
     const [error, setError] = useState('');
-    const {
-        firstName,
-        lastName,
-        userName,
-        email,
-        confirmPassword,
-        password,
-    } = inputs;
+
+    const { firstName, lastName, userName, email, confirmPassword, password } =
+        inputs;
 
     const dispatch = useDispatch();
 
@@ -31,24 +26,24 @@ function Register() {
         setInputs({ ...inputs, [name]: value });
     };
 
-    const sendInputs = async (inputs) => {
-        try {
-            const response = await Axios({
-                method: 'post',
-                url: '/auth/register',
-                data: inputs,
-            });
+    // const sendInputs = async (inputs) => {
+    //     try {
+    //         const response = await Axios({
+    //             method: 'post',
+    //             url: '/auth/register',
+    //             data: inputs,
+    //         });
 
-            if (response.status !== 201) {
-                throw new Error(response.data);
-            }
-            const { data } = response.data;
-            localStorage.setItem('user', JSON.stringify(data));
-            dispatch(login(data.user));
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    //         if (response.status !== 201) {
+    //             throw new Error(response.data);
+    //         }
+    //         const { data } = response.data;
+    //         localStorage.setItem('user', JSON.stringify(data));
+    //         dispatch(login(data.user));
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,7 +62,7 @@ function Register() {
                 setError('Passwords do not match');
             } else {
                 setError('');
-                sendInputs(inputs);
+                dispatch(registerUser(inputs));
             }
         }
     };

@@ -1,12 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Axios } from '../../helpers/Axios';
+
+export const postQuote = (quote) => async (dispatch) => {
+    try {
+        const { data } = await Axios({
+            url: '/quotes',
+            method: 'post',
+            data: {
+                content: quote,
+            },
+        });
+
+        dispatch(createQuote(data.data));
+    } catch (error) {
+        console.log(error.response.data.message);
+    }
+};
 
 const quotesSlice = createSlice({
     name: 'quotes',
     initialState: [],
     reducers: {
+        createQuote(state, action) {
+            state = [action.payload, ...state];
+        },
         loadQuotes(state, action) {
             // create quotes collection
-            return action.payload;
+            state = action.payload;
         },
         validateQuote(state, { payload }) {
             // find quote in state.quotes
@@ -19,6 +39,6 @@ const quotesSlice = createSlice({
     },
 });
 
-export const { loadQuotes, validateQuote } = quotesSlice.actions;
+export const { loadQuotes, validateQuote, createQuote } = quotesSlice.actions;
 
 export default quotesSlice.reducer;

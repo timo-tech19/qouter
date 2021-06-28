@@ -8,10 +8,12 @@ const {
     followUser,
     uploadPhoto,
     upload,
+    getUsers,
 } = require('../controllers/users');
 const router = Router();
 
 router.use(protect);
+router.route('/').post(getUsers);
 router.route('/:userName').get(getUser);
 router.route('/:userId/quotes').get(getQuotes);
 router.route('/:userId/follow').patch(followUser);
