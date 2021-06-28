@@ -1,21 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Axios } from '../../helpers/Axios';
 
-export const postQuote = (quote) => async (dispatch) => {
-    try {
-        const { data } = await Axios({
-            url: '/quotes',
-            method: 'post',
-            data: {
-                content: quote,
-            },
-        });
+export const postQuote = createAsyncThunk(
+    'quotes/createQuote',
+    async (content) => {
+        try {
+            const { data } = await Axios({
+                url: '/quotes',
+                method: 'post',
+                data: {
+                    content,
+                },
+            });
 
-        dispatch(createQuote(data.data));
-    } catch (error) {
-        console.log(error.response.data.message);
+            return data.data;
+        } catch (error) {
+            return error.response.data.message;
+        }
     }
-};
+);
 
 export const fetchQuotes = createAsyncThunk('quotes/fetchQuotes', async () => {
     try {
@@ -34,12 +37,10 @@ const quotesSlice = createSlice({
     initialState: {
         data: [],
         status: 'idle',
+        posting: 'idle',
         error: '',
     },
     reducers: {
-        createQuote(state, action) {
-            state.data = [action.payload, ...state];
-        },
         loadQuotes(state, action) {
             // create quotes collection
             state.data = action.payload;
@@ -54,7 +55,18 @@ const quotesSlice = createSlice({
         },
     },
     extraReducers: {
-        [fetchQuotes.pending]: (state, action) => {
+        [postQuote.pending]: (state) => {
+            state.posting = 'loading';
+        },
+        [postQuote.fulfilled]: (state, { payload }) => {
+            state.posting = 'complete';
+            state.data = [payload, ...state.data];
+        },
+        [postQuote.rejected]: (state, { payload }) => {
+            state.posting = 'failure';
+            state.error = payload;
+        },
+        [fetchQuotes.pending]: (state) => {
             state.status = 'loading';
         },
         [fetchQuotes.fulfilled]: (state, { payload }) => {
@@ -62,7 +74,7 @@ const quotesSlice = createSlice({
             state.data = payload;
         },
         [fetchQuotes.rejected]: (state, { payload }) => {
-            state.status = 'complete';
+            state.status = 'failure';
             state.error = payload;
         },
     },

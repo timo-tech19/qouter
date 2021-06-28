@@ -25,14 +25,15 @@ function Qoute({
     // }
     const [isAgreedActive, setIsAgreedActive] = useState(false);
     const [isReqoutedActive, setIsReqoutedActive] = useState(false);
-
     const [toComment, setToComment] = useState(false);
 
-    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.data);
     const quotes = useSelector((state) => state.quotes);
-    const relativeTime = DateTime.fromISO(createdAt).toRelative();
-    const { user } = JSON.parse(localStorage.getItem('user'));
+
+    const dispatch = useDispatch();
     const history = useHistory();
+
+    const relativeTime = DateTime.fromISO(createdAt).toRelative();
 
     const updateQuotes = (quotes, updatedQuote) => {
         // Find index of quote to update
@@ -101,7 +102,6 @@ function Qoute({
                 <p>{relativeTime}</p>
             </header>
             <blockquote>
-                <i className="fas fa-quote-left"></i>
                 <q className="content">
                     <i>{requoteData ? requoteData.content : content}</i>
                 </q>
