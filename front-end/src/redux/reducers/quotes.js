@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Axios } from '../../helpers/Axios';
 
 export const postQuote = (quote) => async (dispatch) => {
@@ -17,16 +17,32 @@ export const postQuote = (quote) => async (dispatch) => {
     }
 };
 
+export const fetchQuotes = createAsyncThunk('quotes/fetchQuotes', async () => {
+    try {
+        const { data } = await Axios({
+            method: 'get',
+            url: '/quotes',
+        });
+        return data.data;
+    } catch (error) {
+        return error.response.data.message;
+    }
+});
+
 const quotesSlice = createSlice({
     name: 'quotes',
-    initialState: [],
+    initialState: {
+        data: [],
+        status: 'idle',
+        error: '',
+    },
     reducers: {
         createQuote(state, action) {
-            state = [action.payload, ...state];
+            state.data = [action.payload, ...state];
         },
         loadQuotes(state, action) {
             // create quotes collection
-            state = action.payload;
+            state.data = action.payload;
         },
         validateQuote(state, { payload }) {
             // find quote in state.quotes
@@ -35,6 +51,19 @@ const quotesSlice = createSlice({
             console.log(quote);
             // update validates array
             // state.quotes[quoteIndex] = payload;
+        },
+    },
+    extraReducers: {
+        [fetchQuotes.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [fetchQuotes.fulfilled]: (state, { payload }) => {
+            state.status = 'complete';
+            state.data = payload;
+        },
+        [fetchQuotes.rejected]: (state, { payload }) => {
+            state.status = 'complete';
+            state.error = payload;
         },
     },
 });

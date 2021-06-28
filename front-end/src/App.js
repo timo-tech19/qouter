@@ -27,7 +27,7 @@ function App() {
         } else {
             history.push('/login');
         }
-    });
+    }, []);
 
     const authorizeUser = async () => {
         try {
