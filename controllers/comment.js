@@ -39,6 +39,9 @@ exports.createComment = catchAsync(async (req, res, next) => {
     // send comment to client
     res.status(201).json({
         status: 'success',
-        data: updatedQuote,
+        data: {
+            comments: updatedQuote.comments,
+            comment,
+        },
     });
 });

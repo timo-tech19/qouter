@@ -4,7 +4,7 @@ const { createComment } = require('../controllers/comment');
 const {
     getQuotes,
     createQuote,
-    agreeWithQuote,
+    likeQuote,
     requote,
     getQuote,
 } = require('../controllers/quotes');
@@ -14,7 +14,7 @@ const router = Router();
 router.use(protect);
 router.route('/').get(getQuotes).post(createQuote);
 router.route('/:id').get(getQuote);
-router.route('/:id/agree').patch(agreeWithQuote);
+router.route('/:id/like').patch(likeQuote);
 router.route('/:id/requote').post(requote);
 router.route('/:id/comment').post(createComment);
 

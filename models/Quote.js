@@ -13,7 +13,7 @@ const quoteSchema = new Schema(
             type: Boolean,
             default: false,
         },
-        agrees: [
+        likes: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'User',

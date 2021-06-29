@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 
-import { loadQuotes } from '../redux/reducers/quotes';
-import { Axios } from '../helpers/Axios';
+import { likeQuote, reQuote } from '../redux/reducers/quotes';
 
 import Comment from '../components/comment';
 
@@ -14,7 +13,7 @@ function Qoute({
     content,
     createdAt,
     quotedBy,
-    agrees,
+    likes,
     requoters,
     requoteData,
     comments,
@@ -23,64 +22,44 @@ function Qoute({
     //     console.log(requoteData.content);
     //     console.log(content);
     // }
-    const [isAgreedActive, setIsAgreedActive] = useState(false);
+    const [isLikedActive, setIsLikedActive] = useState(false);
     const [isReqoutedActive, setIsReqoutedActive] = useState(false);
     const [toComment, setToComment] = useState(false);
 
     const user = useSelector((state) => state.user.data);
-    const quotes = useSelector((state) => state.quotes);
+    // const quotes = useSelector((state) => state.quotes);
 
     const dispatch = useDispatch();
     const history = useHistory();
 
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
 
-    const updateQuotes = (quotes, updatedQuote) => {
-        // Find index of quote to update
-        const index = quotes.findIndex(
-            (quote) => quote._id === updatedQuote._id
-        );
+    // const updateQuotes = (quotes, updatedQuote) => {
+    //     // Find index of quote to update
+    //     const index = quotes.findIndex(
+    //         (quote) => quote._id === updatedQuote._id
+    //     );
 
-        // Update found quote with new object containing new agrees array
-        const newQuotes = [...quotes];
-        newQuotes[index] = updatedQuote;
-        dispatch(loadQuotes(newQuotes));
-    };
-
-    const handleAgree = async () => {
-        // Get updated agreed post on the server
-        const { data } = await Axios({
-            url: `/quotes/${_id}/agree`,
-            method: 'patch',
-        });
-
-        updateQuotes(quotes, data.data);
-    };
-
-    const handleRequote = async () => {
-        const { data } = await Axios({
-            method: 'post',
-            url: `/quotes/${_id}/requote`,
-        });
-
-        // Update state with updatedQuote
-        updateQuotes(quotes, data.data);
-    };
+    //     // Update found quote with new object containing new likes array
+    //     const newQuotes = [...quotes];
+    //     newQuotes[index] = updatedQuote;
+    //     dispatch(loadQuotes(newQuotes));
+    // };
 
     const showQuotePage = (e) => {
         if (e.target.className === 'quote') history.push(`/quote/${_id}`);
     };
 
     useEffect(() => {
-        // Check is current user has liked a post
-        agrees.includes(user._id)
-            ? setIsAgreedActive(true)
-            : setIsAgreedActive(false);
+        // // Check is current user has liked a post
+        likes.includes(user._id)
+            ? setIsLikedActive(true)
+            : setIsLikedActive(false);
 
         requoters.includes(user._id)
             ? setIsReqoutedActive(true)
             : setIsReqoutedActive(false);
-    }, [agrees]);
+    }, [likes, requoters, user._id]);
 
     // changing props for requoted quotes
     const quoter = requoteData ? requoteData.quotedBy : quotedBy;
@@ -120,18 +99,22 @@ function Qoute({
                     <span>{comments.length || ''}</span>
                 </button>
                 <button
-                    onClick={handleRequote}
+                    onClick={() => {
+                        dispatch(reQuote(_id));
+                    }}
                     className={`action ${isReqoutedActive ? 'active' : ''}`}
                 >
                     <ion-icon name="repeat-outline"></ion-icon>
                     <span>{requoters.length || ''}</span>
                 </button>
                 <button
-                    onClick={handleAgree}
-                    className={`action ${isAgreedActive ? 'active' : ''}`}
+                    onClick={() => {
+                        dispatch(likeQuote(_id));
+                    }}
+                    className={`action ${isLikedActive ? 'active' : ''}`}
                 >
                     <ion-icon name="heart"></ion-icon>
-                    <span>{agrees.length || ''}</span>
+                    <span>{likes.length || ''}</span>
                 </button>
                 <button className="action">
                     <ion-icon name="share-social-outline"></ion-icon>
@@ -141,7 +124,7 @@ function Qoute({
                 <Comment
                     quoteId={_id}
                     setToComment={setToComment}
-                    updateQuotes={updateQuotes}
+                    // updateQuotes={updateQuotes}
                 />
             ) : null}
         </figure>

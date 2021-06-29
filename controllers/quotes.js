@@ -99,7 +99,7 @@ exports.createQuote = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.agreeWithQuote = catchAsync(async (req, res, next) => {
+exports.likeQuote = catchAsync(async (req, res, next) => {
     // Get user from token
     const { user } = req;
 
@@ -107,15 +107,15 @@ exports.agreeWithQuote = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     // Check if quote has already been liked
 
-    const isAgreed = user.agrees ? user.agrees.includes(id) : false;
+    const isLiked = user.likes ? user.likes.includes(id) : false;
 
     // Update User likes collection with quote id
-    // console.log(isAgreed, user.agrees);
-    const option = isAgreed ? '$pull' : '$addToSet';
+    // console.log(isLiked, user.likes);
+    const option = isLiked ? '$pull' : '$addToSet';
     await User.findByIdAndUpdate(
         user._id,
         {
-            [option]: { agrees: id },
+            [option]: { likes: id },
         },
         { new: true }
     );
@@ -124,7 +124,7 @@ exports.agreeWithQuote = catchAsync(async (req, res, next) => {
     const updatedQuote = await Quote.findByIdAndUpdate(
         id,
         {
-            [option]: { agrees: user._id },
+            [option]: { likes: user._id },
         },
         { new: true }
     ).populate('quotedBy');
@@ -132,7 +132,7 @@ exports.agreeWithQuote = catchAsync(async (req, res, next) => {
     // sent updated post to client
     res.status(200).json({
         status: 'success',
-        data: updatedQuote,
+        data: updatedQuote.likes,
     });
 });
 
@@ -144,25 +144,38 @@ exports.requote = catchAsync(async (req, res, next) => {
     //get quoteId
     const { id } = req.params;
     // Try to delete quote(Unrequote)
-    // Find and delete the a requote by current user where original quote id matches the requoteId
+    // Find and delete  a requote by current user where original quote id matches the requoteId
     const deletedQuote = await Quote.findOneAndDelete({
         quotedBy: user._id,
         requoteData: id,
     });
 
-    // Update User likes collection with quote id
     const option = deletedQuote ? '$pull' : '$addToSet';
-    let requote;
+    let requote, requoteStatus;
     // Create a new quote(requote) if no quote was deleted
     if (!deletedQuote) {
         requote = await Quote.create({
             quotedBy: user._id,
             requoteData: id,
         });
+
+        requote = await requote
+            .populate('quotedBy')
+            .populate('requoteData')
+            .populate({
+                path: 'requoteData',
+                populate: { path: 'quotedBy' },
+            })
+            .execPopulate();
+
+        requoteStatus = 'created';
+    } else {
+        requote = deletedQuote._id;
+        requoteStatus = 'deleted';
     }
 
     // insert requote into user collection
-    await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
         user._id,
         {
             [option]: { requotes: id },
@@ -186,6 +199,11 @@ exports.requote = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
         status: 'success',
-        data: updatedQuote,
+        data: {
+            requoters: updatedQuote.requoters,
+            userRequotes: updatedUser.requotes,
+            requote,
+            requoteStatus,
+        },
     });
 });

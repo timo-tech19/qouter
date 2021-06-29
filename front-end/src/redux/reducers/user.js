@@ -67,9 +67,12 @@ const userSlice = createSlice({
         loginError(state, { payload }) {
             state.error = payload;
         },
+        userRequote(state, { payload }) {
+            state.data.requotes = payload;
+        },
     },
 });
 
-export const { login, logout, loginError } = userSlice.actions;
+export const { login, logout, loginError, userRequote } = userSlice.actions;
 
 export default userSlice.reducer;

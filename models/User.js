@@ -34,7 +34,7 @@ const userSchema = new Schema(
             type: String,
             default: '/images/users/cover-default.jpg',
         },
-        agrees: [
+        likes: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Quote',

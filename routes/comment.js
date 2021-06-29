@@ -3,7 +3,7 @@
 // const {
 //     getQuotes,
 //     createQuote,
-//     agreeWithQuote,
+//     likeQuote,
 //     requote,
 // } = require('../controllers/quotes');
 

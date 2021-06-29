@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Axios } from '../../helpers/Axios';
+import { userRequote } from './user';
 
 export const postQuote = createAsyncThunk(
     'quotes/createQuote',
@@ -32,6 +33,67 @@ export const fetchQuotes = createAsyncThunk('quotes/fetchQuotes', async () => {
     }
 });
 
+export const likeQuote = (id) => async (dispatch) => {
+    try {
+        // Get updated Liked post on the server
+        const { data } = await Axios({
+            url: `/quotes/${id}/like`,
+            method: 'patch',
+        });
+
+        dispatch(like({ id, likes: data.data }));
+    } catch (error) {
+        if (error.response) {
+            alert(error.response.data.message);
+            console.log(error.response.data);
+        } else {
+            console.log(error);
+        }
+    }
+};
+
+export const reQuote = (id) => async (dispatch) => {
+    try {
+        // Get updated requote post on the server
+        const { data } = await Axios({
+            method: 'post',
+            url: `/quotes/${id}/requote`,
+        });
+
+        // console.log(data.data);
+        data.data.requoteStatus === 'created'
+            ? dispatch(createRequote(data.data.requote))
+            : dispatch(deleteRequote(data.data.requote));
+
+        dispatch(requote({ id, requoters: data.data.requoters }));
+        dispatch(userRequote(data.data.userRequotes));
+    } catch (error) {
+        if (error.response) {
+            alert(error.response.data.message);
+            console.log(error.response.data);
+        } else {
+            console.log(error);
+        }
+    }
+};
+
+export const commentQuote = (id, comment) => async (dispatch) => {
+    try {
+        const { data } = await Axios.post(`/quotes/${id}/comment`, {
+            content: comment,
+        });
+        // console.log(data);
+        dispatch(comment(id, data.data.comments));
+    } catch (error) {
+        if (error.response) {
+            alert(error.response.data.message);
+            console.log(error.response.data);
+        } else {
+            console.log(error);
+        }
+    }
+};
+
 const quotesSlice = createSlice({
     name: 'quotes',
     initialState: {
@@ -41,17 +103,25 @@ const quotesSlice = createSlice({
         error: '',
     },
     reducers: {
-        loadQuotes(state, action) {
-            // create quotes collection
-            state.data = action.payload;
+        createRequote(state, { payload }) {
+            state.posting = 'complete';
+            state.data = [payload, ...state.data];
         },
-        validateQuote(state, { payload }) {
-            // find quote in state.quotes
-            const quote = state[1];
-
-            console.log(quote);
-            // update validates array
-            // state.quotes[quoteIndex] = payload;
+        deleteRequote(state, { payload }) {
+            const i = state.data.findIndex((quote) => quote._id === payload);
+            if (i > -1) state.data.splice(i, 1);
+        },
+        like(state, { payload }) {
+            const quote = state.data.find((quote) => quote._id === payload.id);
+            if (quote) quote.likes = payload.likes;
+        },
+        requote(state, { payload }) {
+            const quote = state.data.find((quote) => quote._id === payload.id);
+            if (quote) quote.requoters = payload.requoters;
+        },
+        comment(state, { payload }) {
+            const quote = state.data.find((quote) => quote._id === payload.id);
+            if (quote) quote.comments = payload.comments;
         },
     },
     extraReducers: {
@@ -80,6 +150,7 @@ const quotesSlice = createSlice({
     },
 });
 
-export const { loadQuotes, validateQuote, createQuote } = quotesSlice.actions;
+export const { like, requote, createRequote, deleteRequote } =
+    quotesSlice.actions;
 
 export default quotesSlice.reducer;
