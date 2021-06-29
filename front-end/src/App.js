@@ -19,6 +19,17 @@ function App() {
     let token = useRef(null);
 
     useEffect(() => {
+        const authorizeUser = async () => {
+            try {
+                const { data } = await Axios({
+                    method: 'post',
+                    url: '/auth/authorize-user',
+                });
+
+                dispatch(login(data.data));
+            } catch (error) {}
+        };
+
         // Check for user in localStorage
         token.current = JSON.parse(localStorage.getItem('userToken'));
         // update redux store with found user
@@ -27,18 +38,7 @@ function App() {
         } else {
             history.push('/login');
         }
-    }, []);
-
-    const authorizeUser = async () => {
-        try {
-            const { data } = await Axios({
-                method: 'post',
-                url: '/auth/authorize-user',
-            });
-
-            dispatch(login(data.data));
-        } catch (error) {}
-    };
+    }, [history, dispatch]);
 
     return (
         <>

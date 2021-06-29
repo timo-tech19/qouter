@@ -8,7 +8,7 @@ import { likeQuote, reQuote } from '../redux/reducers/quotes';
 import Comment from '../components/comment';
 
 // props: _id, content, createdAt
-function Qoute({
+function Quote({
     _id,
     content,
     createdAt,
@@ -18,33 +18,16 @@ function Qoute({
     requoteData,
     comments,
 }) {
-    // if (requoteData) {
-    //     console.log(requoteData.content);
-    //     console.log(content);
-    // }
     const [isLikedActive, setIsLikedActive] = useState(false);
-    const [isReqoutedActive, setIsReqoutedActive] = useState(false);
+    const [isRequotedActive, setIsRequotedActive] = useState(false);
     const [toComment, setToComment] = useState(false);
 
     const user = useSelector((state) => state.user.data);
-    // const quotes = useSelector((state) => state.quotes);
 
     const dispatch = useDispatch();
     const history = useHistory();
 
     const relativeTime = DateTime.fromISO(createdAt).toRelative();
-
-    // const updateQuotes = (quotes, updatedQuote) => {
-    //     // Find index of quote to update
-    //     const index = quotes.findIndex(
-    //         (quote) => quote._id === updatedQuote._id
-    //     );
-
-    //     // Update found quote with new object containing new likes array
-    //     const newQuotes = [...quotes];
-    //     newQuotes[index] = updatedQuote;
-    //     dispatch(loadQuotes(newQuotes));
-    // };
 
     const showQuotePage = (e) => {
         if (e.target.className === 'quote') history.push(`/quote/${_id}`);
@@ -57,8 +40,8 @@ function Qoute({
             : setIsLikedActive(false);
 
         requoters.includes(user._id)
-            ? setIsReqoutedActive(true)
-            : setIsReqoutedActive(false);
+            ? setIsRequotedActive(true)
+            : setIsRequotedActive(false);
     }, [likes, requoters, user._id]);
 
     // changing props for requoted quotes
@@ -80,7 +63,7 @@ function Qoute({
                 </Link>
                 <p>{relativeTime}</p>
             </header>
-            <blockquote>
+            <blockquote onClick={showQuotePage}>
                 <q className="content">
                     <i>{requoteData ? requoteData.content : content}</i>
                 </q>
@@ -102,7 +85,7 @@ function Qoute({
                     onClick={() => {
                         dispatch(reQuote(_id));
                     }}
-                    className={`action ${isReqoutedActive ? 'active' : ''}`}
+                    className={`action ${isRequotedActive ? 'active' : ''}`}
                 >
                     <ion-icon name="repeat-outline"></ion-icon>
                     <span>{requoters.length || ''}</span>
@@ -121,14 +104,10 @@ function Qoute({
                 </button>
             </footer>
             {toComment ? (
-                <Comment
-                    quoteId={_id}
-                    setToComment={setToComment}
-                    // updateQuotes={updateQuotes}
-                />
+                <Comment quoteId={_id} setToComment={setToComment} />
             ) : null}
         </figure>
     );
 }
 
-export default Qoute;
+export default Quote;

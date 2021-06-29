@@ -77,13 +77,13 @@ export const reQuote = (id) => async (dispatch) => {
     }
 };
 
-export const commentQuote = (id, comment) => async (dispatch) => {
+export const commentQuote = (id, content) => async (dispatch) => {
     try {
         const { data } = await Axios.post(`/quotes/${id}/comment`, {
-            content: comment,
+            content,
         });
-        // console.log(data);
-        dispatch(comment(id, data.data.comments));
+        console.log(data);
+        dispatch(comment({ id, comments: data.data.comments }));
     } catch (error) {
         if (error.response) {
             alert(error.response.data.message);
@@ -93,6 +93,11 @@ export const commentQuote = (id, comment) => async (dispatch) => {
         }
     }
 };
+
+// export const getQuote = (id) => async (dispatch) => {
+//     const { data } = await Axios.get(`/quotes/${id}`);
+//     // setQuote(data.data);
+// };
 
 const quotesSlice = createSlice({
     name: 'quotes',
@@ -150,7 +155,7 @@ const quotesSlice = createSlice({
     },
 });
 
-export const { like, requote, createRequote, deleteRequote } =
+export const { like, requote, createRequote, deleteRequote, comment } =
     quotesSlice.actions;
 
 export default quotesSlice.reducer;

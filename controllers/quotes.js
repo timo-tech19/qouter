@@ -5,10 +5,12 @@ const AppError = require('../utils/appError');
 
 exports.getQuotes = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-    console.log(req.user);
+    const { term } = req.body;
     let queryObj = {};
 
     if (userId) queryObj = { ...queryObj, quotedBy: userId };
+
+    if (term) queryObj = { content: { $regex: term, $options: 'i' } };
 
     const quotes = await Quote.find(queryObj)
         .select('-__v')
@@ -21,7 +23,7 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
         .sort({ createdAt: -1 });
 
     if (!quotes) {
-        res.status(404).json({
+        return res.status(404).json({
             status: 'failed',
             message: 'No qoutes found',
         });
@@ -34,21 +36,6 @@ exports.getQuotes = catchAsync(async (req, res, next) => {
     });
 });
 
-// exports.getUserQuotes = catchAsync(async (req, res, next) => {
-//     const { userId } = req.params;
-
-//     const quotes = await Quote.find({ quotedBy: userId });
-
-//     if (!quotes) {
-//         return next(new AppError('User quotes not found', 404));
-//     }
-
-//     res.status(200).json({
-//         status: 'success',
-//         results: quotes.length,
-//         data: quotes,
-//     });
-// });
 exports.getQuote = catchAsync(async (req, res, next) => {
     const { id } = req.params;
 

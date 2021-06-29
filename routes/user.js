@@ -13,7 +13,7 @@ const {
 const router = Router();
 
 router.use(protect);
-router.route('/').post(getUsers);
+router.route('/').get(getUsers).post(getUsers);
 router.route('/:userName').get(getUser);
 router.route('/:userId/quotes').get(getQuotes);
 router.route('/:userId/follow').patch(followUser);

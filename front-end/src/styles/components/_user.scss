@@ -1,0 +1,36 @@
+.user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+    background-color: rgba($color-primary, 0.1);
+    padding: 1rem;
+    border-radius: 10rem;
+
+    &__info {
+        display: flex;
+        align-items: center;
+
+        span {
+            display: inline-block;
+        }
+    }
+
+    &__image {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 100%;
+        overflow: hidden;
+        margin-right: 2rem;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    &__name {
+        font-weight: 700;
+        color: $text-color-light;
+        margin-right: 2rem;
+    }
+}

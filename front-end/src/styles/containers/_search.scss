@@ -30,3 +30,11 @@
         border-bottom: 3px solid $color-primary;
     }
 }
+
+.no-results {
+    margin: 2rem auto;
+    text-align: center;
+    font-size: 1.8rem;
+    color: $text-color;
+    opacity: 0.3;
+}

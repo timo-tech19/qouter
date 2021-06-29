@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchQuotes } from '../redux/reducers/quotes';
-import Qoute from './quote';
+import Quote from './quote';
 
 function Quotes() {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ function Quotes() {
                 <div className="loader">Loading...</div>
             ) : (
                 data.map((quote) => {
-                    return <Qoute key={quote._id} {...quote} />;
+                    return <Quote key={quote._id} {...quote} />;
                 })
             )}
         </div>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Axios } from '../helpers/Axios';
 import { commentQuote } from '../redux/reducers/quotes';
 
 function Comment({ quoteId, setToComment }) {

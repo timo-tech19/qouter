@@ -6,7 +6,7 @@ import 'cropperjs/dist/cropper.css';
 import { toggleModal } from '../redux/reducers/modal';
 import { login } from '../redux/reducers/user';
 import { useParams, useHistory } from 'react-router-dom';
-import Qoute from '../components/quote';
+import Quote from '../components/quote';
 import { Axios } from '../helpers/Axios';
 import Modal from '../components/modal';
 import { readURL } from '../helpers/functions';
@@ -184,7 +184,7 @@ function Profile({ profileUser, activeUser }) {
             ) : null}
             <div className="quotes-container">
                 {quotes.map((quote) => (
-                    <Qoute key={quote._id} {...quote} />
+                    <Quote key={quote._id} {...quote} />
                 ))}
             </div>
         </main>
