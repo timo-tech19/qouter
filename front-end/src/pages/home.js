@@ -10,6 +10,7 @@ import Search from '../containers/search';
 import Chats from '../containers/chats';
 import NewChat from '../containers/newChat';
 import Navbar from '../components/navbar';
+import Chat from '../containers/chat';
 
 function Home() {
     const user = useSelector((state) => state.user.data);
@@ -18,6 +19,9 @@ function Home() {
         <div className="homepage">
             <Navbar />
             <Switch>
+                <ProtectedRoute user={user} exact path="/chats/:chatId">
+                    <Chat />
+                </ProtectedRoute>
                 <ProtectedRoute user={user} exact path="/new-chat">
                     <NewChat activeUser={user} />
                 </ProtectedRoute>

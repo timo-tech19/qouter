@@ -1,0 +1,49 @@
+.chat-item {
+    padding: 1rem;
+    border-bottom: 1px solid rgba($text-color, 0.2);
+    cursor: pointer;
+    display: flex;
+
+    &:first-child {
+        border-top: 1px solid rgba($text-color, 0.2);
+    }
+
+    &:hover {
+        background-color: rgba($color-primary, 0.2);
+    }
+
+    &__title {
+        margin-bottom: 0.5rem;
+    }
+
+    &__last-message {
+        opacity: 0.4;
+    }
+
+    &__details {
+        flex: 1;
+    }
+
+    &__images {
+        padding: 2rem;
+        position: relative;
+        margin-right: 1rem;
+        width: 11%;
+    }
+
+    &__image {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid $text-color-light;
+
+        position: absolute;
+        top: 0;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+}

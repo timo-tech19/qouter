@@ -1,14 +1,16 @@
 import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Axios } from '../helpers/Axios';
+import ChatItem from '../components/chatItem';
 
 function Chats() {
     const history = useHistory();
+    const [chats, setChats] = useState([]);
 
     useEffect(() => {
         async function getChats() {
             const { data } = await Axios.get('/chats');
-            console.log(data.data);
+            setChats(data.data);
         }
         getChats();
     }, []);
@@ -25,7 +27,13 @@ function Chats() {
                 </button>
             </h1>
             <hr />
-            <div className="search-form"></div>
+            <ul className="chats-list">
+                {chats.length > 0 ? (
+                    chats.map((chat) => <ChatItem key={chat._id} {...chat} />)
+                ) : (
+                    <p className="no-results">No Chats</p>
+                )}
+            </ul>
         </main>
     );
 }

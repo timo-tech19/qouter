@@ -117,7 +117,12 @@ function Profile() {
                                 <button>Edit Profile</button>
                             ) : (
                                 <>
-                                    <button className="message-button">
+                                    <button
+                                        className="message-button"
+                                        onClick={() =>
+                                            history.push(`/chats/${user._id}`)
+                                        }
+                                    >
                                         <ion-icon name="mail-outline"></ion-icon>
                                     </button>
                                     {isCurrentUser ? (
@@ -129,6 +134,13 @@ function Profile() {
                                             onClick={() => {
                                                 dispatch(followUser(user._id));
                                             }}
+                                            className={`${
+                                                currentUser.following.includes(
+                                                    user._id
+                                                )
+                                                    ? ''
+                                                    : 'btn-outline'
+                                            }`}
                                         >
                                             {currentUser.following.includes(
                                                 user._id
