@@ -29,11 +29,11 @@ function Home() {
                 </ProtectedRoute>
                 {/* For other users */}
                 <ProtectedRoute user={user} exact path="/profile/:userName">
-                    <Profile activeUser={user} />
+                    <Profile />
                 </ProtectedRoute>
                 {/* For active user */}
                 <ProtectedRoute user={user} exact path="/profile">
-                    <Profile profileUser={user} />
+                    <Profile />
                 </ProtectedRoute>
                 <ProtectedRoute user={user} exact path="/quote/:quoteId">
                     <QuoteContainer />

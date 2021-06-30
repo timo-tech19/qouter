@@ -3,6 +3,7 @@ const cors = require('cors');
 const authRouter = require('./routes/auth');
 const quoteRouter = require('./routes/quote');
 const userRouter = require('./routes/user');
+const chatRouter = require('./routes/chat');
 
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/quotes', quoteRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/chats', chatRouter);
 
 app.all('*', (req, res, next) => {
     next(new AppError(`Cannot find ${req.originalUrl} on this server`, 404));

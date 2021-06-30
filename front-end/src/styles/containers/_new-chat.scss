@@ -29,33 +29,10 @@
     }
 
     .users {
-        padding: 2rem;
         .user {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 1rem 0;
-            transition: background-color 0.3s ease;
-
+            cursor: pointer;
             &:hover {
                 background-color: lighten($bg-color, 7);
-            }
-
-            img {
-                width: 5rem;
-                height: 5rem;
-                border-radius: 50%;
-                margin-left: 0.5rem;
-            }
-
-            .name {
-                color: $text-color-light;
-                margin-left: 2rem;
-            }
-
-            .username {
-                margin-left: 1rem;
-                color: $text-color;
             }
         }
     }

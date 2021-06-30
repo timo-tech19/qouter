@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router';
 import { Axios } from '../helpers/Axios';
+import User from '../components/user';
 
 function NewChat({ activeUser }) {
     const [users, setUsers] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const input = useRef(null);
+    const history = useHistory();
 
     const handleTyping = (e) => {
         const term = e.target.value.trim();
@@ -52,6 +55,24 @@ function NewChat({ activeUser }) {
         );
     };
 
+    const createChat = async () => {
+        try {
+            const { data } = await Axios.post('/chats', {
+                users: selectedUsers,
+            });
+
+            console.log(data);
+            history.push(`/chats/${data.data._id}`);
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.message);
+                console.log(error.response);
+            } else {
+                console.log(error);
+            }
+        }
+    };
+
     return (
         <main className="new-chat">
             <h1>New Chat</h1>
@@ -82,27 +103,19 @@ function NewChat({ activeUser }) {
                 <hr />
                 <div className="users">
                     {users.map((user) => {
-                        const { _id, photoUrl, firstName, lastName, userName } =
-                            user;
-
                         return (
-                            <div
-                                key={_id}
-                                className="user"
-                                onClick={() => selectUser(user)}
-                            >
-                                <img src={photoUrl} alt={firstName} />
-                                <span className="name">
-                                    {firstName + ' ' + lastName}
-                                </span>
-                                <span className="username">{userName}</span>
-                            </div>
+                            <User
+                                key={user._id}
+                                {...user}
+                                click={() => selectUser(user)}
+                            />
                         );
                     })}
                 </div>
                 <button
                     className="create-chat"
                     disabled={!selectedUsers.length}
+                    onClick={createChat}
                 >
                     Create Chat
                 </button>

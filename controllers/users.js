@@ -60,14 +60,20 @@ exports.getUser = catchAsync(async (req, res, next) => {
 exports.upload = upload.single('userPhoto');
 exports.uploadPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) return next(new AppError('No image uploaded', 400));
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
-        photoUrl: `/images/users/${req.file.filename}`,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            photoUrl: `/images/users/${req.file.filename}`,
+        },
+        { new: true }
+    );
     req.user = updatedUser;
 
     res.status(200).json({
         status: 'sucess',
-        data: updatedUser,
+        data: {
+            photoUrl: updatedUser.photoUrl,
+        },
     });
 
     // req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
@@ -89,7 +95,7 @@ exports.followUser = catchAsync(async (req, res, next) => {
 
     // add user id to following array
     const option = isFollowing ? '$pull' : '$addToSet';
-    const updatedActiveUser = await User.findByIdAndUpdate(
+    const updatedCurrentUser = await User.findByIdAndUpdate(
         user._id,
         {
             [option]: { following: userId },
@@ -98,7 +104,7 @@ exports.followUser = catchAsync(async (req, res, next) => {
     );
 
     // update followed user followers array
-    const updatedUser = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
         userId,
         {
             [option]: { followers: user._id },
@@ -107,7 +113,9 @@ exports.followUser = catchAsync(async (req, res, next) => {
     );
     // send updated following to client
     res.status(200).json({
-        status: 'sucess',
-        data: { updatedUser, updatedActiveUser },
+        status: 'success',
+        data: {
+            following: updatedCurrentUser.following,
+        },
     });
 });

@@ -1,7 +1,18 @@
 import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Axios } from '../helpers/Axios';
 
 function Chats() {
     const history = useHistory();
+
+    useEffect(() => {
+        async function getChats() {
+            const { data } = await Axios.get('/chats');
+            console.log(data.data);
+        }
+        getChats();
+    }, []);
+
     return (
         <main className="chats">
             <h1>

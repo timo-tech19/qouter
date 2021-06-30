@@ -1,28 +1,30 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
 import { toggleModal } from '../redux/reducers/modal';
-import { login } from '../redux/reducers/user';
-import { useParams, useHistory } from 'react-router-dom';
+import { followUser, updateUserPhoto } from '../redux/reducers/user';
+
 import Quote from '../components/quote';
-import { Axios } from '../helpers/Axios';
 import Modal from '../components/modal';
 import { readURL } from '../helpers/functions';
-// import ImageCrop from '../components/imageCrop';
+import { Axios } from '../helpers/Axios';
 
-function Profile({ profileUser, activeUser }) {
+function Profile() {
+    const match = useRouteMatch();
     const [quotes, setQuotes] = useState([]);
     const [user, setUser] = useState(null);
+    const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [src, setSrc] = useState(null);
     const [croppedImage, setCroppedImage] = useState(null);
+
     const { userName } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const userAuth = JSON.parse(localStorage.getItem('user'));
-    // const activeUser = useSelector((state) => state.user);
+    const currentUser = useSelector((state) => state.user.data);
     const modal = useSelector((state) => state.modal);
 
     const uploadRef = useRef(null);
@@ -31,75 +33,48 @@ function Profile({ profileUser, activeUser }) {
     const onCrop = () => {
         const imageElement = cropperRef.current;
         const cropper = imageElement.cropper;
-        // console.log(cropper.getCroppedCanvas().toDataURL());
         cropper.getCroppedCanvas().toBlob((blob) => setCroppedImage(blob));
     };
 
-    const upload = async () => {
-        const formData = new FormData();
-        // formData.append('name', 'photo');
-        formData.append('userPhoto', croppedImage);
-        try {
-            const { data } = await Axios({
-                url: `/users/${profileUser._id}/upload-photo`,
-                method: 'patch',
-                data: formData,
-                headers: {
-                    'content-type': 'multipart/form-data',
-                },
-            });
-            setUser(data.data);
-            dispatch(login(data.data));
-            userAuth.user = data.data;
-            localStorage.setItem('user', JSON.stringify(userAuth));
-        } catch (error) {
-            console.log(error.response);
-        }
-    };
-
-    const handleFollow = async () => {
-        try {
-            const { data } = await Axios.patch(`/users/${user._id}/follow`);
-            console.log(data);
-            dispatch(login(data.data.updatedActiveUser));
-            setUser(data.data.updatedUser);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const getUser = async (user, activeUser) => {
-        if (user) {
-            return setUser(user);
-        }
-
-        const { data } = await Axios.get(`/users/${userName}`);
-        // console.log(data);
-        if (data.data._id === activeUser._id) history.push('/profile');
+    const getUser = async (username) => {
+        const { data } = await Axios.get(`/users/${username}`);
         return setUser(data.data);
     };
 
-    const getQuotes = async () => {
-        try {
-            const { data } = await Axios.get(`/users/${user._id}/quotes`);
-            if (data) {
-                setQuotes(data.data);
-            }
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        if (match.path === '/profile') {
+            setUser(currentUser);
+            setIsCurrentUser(true);
+        } else {
+            if (userName === currentUser.userName)
+                return history.push('/profile');
+
+            getUser(userName);
+            setIsCurrentUser(false);
         }
+    }, [currentUser, match.path, userName, history]);
+
+    useEffect(() => {
+        const getQuotes = async () => {
+            try {
+                const { data } = await Axios.get(`/users/${user._id}/quotes`);
+                if (data) setQuotes(data.data);
+            } catch (error) {
+                if (error.response) {
+                    alert(error.response.data.message);
+                    console.log(error.response);
+                } else {
+                    console.log(error);
+                }
+            }
+        };
+        if (user) getQuotes();
+    }, [user]);
+
+    const handleSelectFile = () => {
+        if (modal) readURL(uploadRef.current, setSrc);
     };
 
-    useEffect(() => {
-        if (modal) readURL(uploadRef.current, setSrc);
-    });
-
-    useEffect(() => {
-        getUser(profileUser, activeUser);
-        getQuotes();
-
-        // Performance issue
-    });
     return (
         <main className="profile">
             <h1>Profile</h1>
@@ -113,7 +88,7 @@ function Profile({ profileUser, activeUser }) {
                         </div>
                         <div className="user-image">
                             <img src={user.photoUrl} alt="User" />
-                            {profileUser ? (
+                            {isCurrentUser ? (
                                 <button
                                     onClick={() => dispatch(toggleModal(true))}
                                 >
@@ -138,38 +113,49 @@ function Profile({ profileUser, activeUser }) {
                             </p>
                         </div>
                         <div className="user-actions">
-                            {profileUser ? (
+                            {isCurrentUser ? (
                                 <button>Edit Profile</button>
                             ) : (
                                 <>
                                     <button className="message-button">
                                         <ion-icon name="mail-outline"></ion-icon>
                                     </button>
-                                    <button
-                                        className="follow-button"
-                                        onClick={handleFollow}
-                                    >
-                                        {activeUser
-                                            ? activeUser.following.includes(
-                                                  user._id
-                                              )
+                                    {isCurrentUser ? (
+                                        <button className="edit-profile-button">
+                                            Edit Profile
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                dispatch(followUser(user._id));
+                                            }}
+                                        >
+                                            {currentUser.following.includes(
+                                                user._id
+                                            )
                                                 ? 'Following'
-                                                : 'Follow'
-                                            : profileUser.following.includes(
-                                                  user._id
-                                              )
-                                            ? 'Following'
-                                            : 'Follow'}
-                                    </button>
+                                                : 'Follow'}
+                                        </button>
+                                    )}
                                 </>
                             )}
                         </div>
                     </div>
                 </header>
             ) : null}
+
             {modal ? (
-                <Modal done={upload}>
-                    <input type="file" ref={uploadRef} name="photo" />
+                <Modal
+                    done={() =>
+                        dispatch(updateUserPhoto(user._id, croppedImage))
+                    }
+                >
+                    <input
+                        type="file"
+                        ref={uploadRef}
+                        name="photo"
+                        onChange={handleSelectFile}
+                    />
                     <div className="preview">
                         <Cropper
                             src={src}

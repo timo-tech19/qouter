@@ -43,6 +43,44 @@ export const loginUser = (userData) => {
     };
 };
 
+export const followUser = (id) => async (dispatch) => {
+    try {
+        const { data } = await Axios.patch(`/users/${id}/follow`);
+        dispatch(follow(data.data.following));
+    } catch (error) {
+        if (error.response) {
+            alert(error.response.data.message);
+            console.log(error.response);
+        } else {
+            console.log(error);
+        }
+    }
+};
+
+export const updateUserPhoto = (id, image) => async (dispatch) => {
+    const formData = new FormData();
+    // formData.append('name', 'photo');
+    formData.append('userPhoto', image);
+    try {
+        const { data } = await Axios({
+            url: `/users/${id}/upload-photo`,
+            method: 'patch',
+            data: formData,
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+        dispatch(updatePhoto(data.data.photoUrl));
+    } catch (error) {
+        if (error.response) {
+            alert(error.response.data.message);
+            console.log(error.response);
+        } else {
+            console.log(error);
+        }
+    }
+};
+
 // const registerUser = createAsyncThunk(
 //     '/auth/register',
 //     async (userId, thunkAPI) => {
@@ -70,9 +108,16 @@ const userSlice = createSlice({
         userRequote(state, { payload }) {
             state.data.requotes = payload;
         },
+        follow(state, { payload }) {
+            state.data.following = payload;
+        },
+        updatePhoto(state, { payload }) {
+            state.data.photoUrl = payload;
+        },
     },
 });
 
-export const { login, logout, loginError, userRequote } = userSlice.actions;
+export const { login, logout, loginError, userRequote, follow, updatePhoto } =
+    userSlice.actions;
 
 export default userSlice.reducer;
