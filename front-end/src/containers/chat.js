@@ -1,19 +1,21 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Axios } from '../helpers/Axios';
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from '../components/modal';
 import { toggleModal } from '../redux/reducers/modal';
 
 function Chat() {
-    const otherUsers = useRef([]);
+    const [otherUsers, setOtherUsers] = useState([]);
     const [chat, setChat] = useState(null);
     const [chatName, setChatName] = useState('');
     const [inputChatName, setInputChatName] = useState('');
+    const [message, setMessage] = useState('');
     const { chatId } = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
     const modal = useSelector((state) => state.modal);
+    const numImages = 3;
 
     const userId = useSelector((state) => state.user.data._id);
 
@@ -31,18 +33,23 @@ function Chat() {
     }, [chatId, history]);
 
     useEffect(() => {
-        if (chat && chat.name) {
-            setChatName(chat.name);
-        } else if (chat) {
-            otherUsers.current = chat.users.filter(
-                (user, i) => user._id !== userId && i < 4
-            );
-            const userNames = otherUsers.current.map(
-                (user) => `${user.firstName} ${user.lastName}`
-            );
-            setChatName(userNames.join(', '));
+        if (chat) {
+            if (chat.name) {
+                setChatName(chat.name);
+            } else if (chat) {
+                const userNames = otherUsers.map(
+                    (user) => `${user.firstName} ${user.lastName}`
+                );
+                setChatName(userNames.join(', '));
+            }
+
+            if (!otherUsers.length) {
+                setOtherUsers(
+                    chat.users.filter((user, i) => user._id !== userId && i < 4)
+                );
+            }
         }
-    }, [chat, userId]);
+    }, [chat, userId, otherUsers]);
 
     const changeChatName = async (name) => {
         try {
@@ -53,27 +60,72 @@ function Chat() {
         }
     };
 
+    const sendMessage = async () => {
+        try {
+            const { data } = await Axios.post('/messages', {
+                content: message,
+            });
+            console.log(data);
+        } catch (error) {
+            alert(error.response.data.message);
+        }
+    };
+
     return (
         <main className="chat">
-            <h1
-                className={
-                    chat ? (chat.isGroupChat ? 'group-chat-heading' : '') : ''
-                }
-                onClick={() => {
-                    if (chat.isGroupChat) dispatch(toggleModal(true));
-                }}
+            <div
+                className={`header ${
+                    chat ? (chat.isGroupChat ? 'group-chat-header' : '') : ''
+                }`}
             >
-                {chatName}
-            </h1>
+                <div className="chat-item__images">
+                    {otherUsers.length - numImages > 0 ? (
+                        <span className="num-images-left">
+                            +{otherUsers.length - numImages}
+                        </span>
+                    ) : null}
+
+                    {otherUsers.map((user, i) => {
+                        if (i + 1 > numImages) return null;
+                        return (
+                            <div key={user._id} className="chat-item__image">
+                                <img src={user.photoUrl} alt={user.firstName} />
+                            </div>
+                        );
+                    })}
+                </div>
+                <h1
+                    onClick={() => {
+                        if (chat.isGroupChat) dispatch(toggleModal(true));
+                    }}
+                >
+                    {chatName}
+                </h1>
+            </div>
+
             <hr />
-            <div className="chat-window">Hello</div>
+            <div className="chat-window">
+                <ul className="message-list">
+                    <li className="message-item">Hello</li>
+                    <li className="message-item message-item__mine">
+                        how are you?
+                    </li>
+                    <li className="message-item">I'm fine and you?</li>
+                    <li className="message-item message-item__mine">
+                        I'm good
+                    </li>
+                </ul>
+            </div>
             <footer className="message-box">
                 <textarea
                     name="message"
                     className="message"
                     placeholder="Type message"
+                    onChange={(e) => setMessage(e.target.value.trim())}
                 ></textarea>
-                <button>Send</button>
+                <button onClick={sendMessage}>
+                    <ion-icon name="paper-plane"></ion-icon>
+                </button>
             </footer>
             {modal ? (
                 <Modal done={() => changeChatName(inputChatName)}>
@@ -82,7 +134,10 @@ function Chat() {
                         type="text"
                         className="message"
                         placeholder="Type here..."
-                        onChange={(e) => setInputChatName(e.target.value)}
+                        value={message}
+                        onChange={(e) =>
+                            setInputChatName(e.target.value.trim())
+                        }
                     />
                 </Modal>
             ) : null}

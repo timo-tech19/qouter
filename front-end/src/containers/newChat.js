@@ -20,7 +20,7 @@ function NewChat({ activeUser }) {
                 const { data } = await Axios({
                     method: 'post',
                     url: '/users',
-                    data: { term: e.target.value },
+                    data: { term },
                 });
                 let foundUsers = data.data;
 
