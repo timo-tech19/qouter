@@ -162,6 +162,7 @@ function Profile() {
                         dispatch(updateUserPhoto(user._id, croppedImage))
                     }
                 >
+                    <h3>Choose your photo</h3>
                     <input
                         type="file"
                         ref={uploadRef}

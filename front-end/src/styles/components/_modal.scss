@@ -24,6 +24,8 @@
     padding: 1rem 2rem 3rem;
     display: flex;
     flex-direction: column;
+    min-width: 40%;
+    min-height: 40%;
 
     .close {
         align-self: flex-end;

@@ -42,7 +42,7 @@ exports.getChats = catchAsync(async (req, res, next) => {
     });
 });
 
-const getChatByUserId = (userId, otherUserId) => {
+const getChatByUserId = (userId, username, otherUserId) => {
     return Chat.findOneAndUpdate(
         {
             isGroupChat: false,
@@ -59,7 +59,7 @@ const getChatByUserId = (userId, otherUserId) => {
             },
         },
         {
-            $setOnInsert: { users: [userId, otherUserId] },
+            $setOnInsert: { name: username, users: [userId, otherUserId] },
         },
         { new: true, upsert: true }
     );
@@ -80,7 +80,12 @@ exports.getChat = catchAsync(async (req, res, next) => {
         foundUser = await User.findById(id);
 
         if (foundUser) {
-            chat = await getChatByUserId(user._id, foundUser._id);
+            const username = `${user.firstName} ${user.lastName}`;
+            chat = await getChatByUserId(
+                user._id,
+                username,
+                user.foundUser._id
+            );
         }
     }
 
@@ -89,5 +94,23 @@ exports.getChat = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: chat,
+    });
+});
+
+exports.updateChat = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const updatedChat = await Chat.findByIdAndUpdate(
+        id,
+        { name },
+        { new: true }
+    );
+
+    if (!updatedChat) return next(new AppError('Update Chat failed', 400));
+
+    res.status(200).json({
+        status: 'success',
+        data: updatedChat,
     });
 });

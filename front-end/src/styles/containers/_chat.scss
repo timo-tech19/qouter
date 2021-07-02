@@ -1,0 +1,42 @@
+.chat {
+    display: flex;
+    flex-direction: column;
+
+    .group-chat-heading {
+        cursor: pointer;
+        &:hover {
+            background-color: rgba($color-primary, 0.15);
+        }
+    }
+
+    .chat-window {
+        flex: 1;
+    }
+
+    .message-box {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        padding-bottom: 4rem;
+
+        button {
+            margin: 0 2rem;
+        }
+    }
+
+    .message {
+        background-color: rgba($color-primary, 0.15);
+        border: none;
+        border-radius: 100px;
+        color: $text-color-light;
+        flex: 1;
+        resize: none;
+        color: $text-color;
+        outline: none;
+        font-family: $font;
+        font-size: 1.6rem;
+        padding: 0.5rem 2rem 1rem;
+        line-height: 1.5;
+        height: 4rem;
+    }
+}
